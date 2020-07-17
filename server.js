@@ -14,7 +14,7 @@ app.set("view engine", "handlebars");
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
-   res.sendFile(__dirname + '/index.html');
+   res.render(__dirname + '/views/index.handlebars');
 });
 //Sets up username in array
 users = [];
