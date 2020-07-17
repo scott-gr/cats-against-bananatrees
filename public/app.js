@@ -12,6 +12,10 @@ function setUsername() {
   }
 }
 
+const whiteBackground = () => {
+  $("#name").css("background-color", "white");
+}
+
 const enableButton = (event) => {
   console.log("called");
   console.log(event);
