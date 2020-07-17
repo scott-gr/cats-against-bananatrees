@@ -1,3 +1,5 @@
+--ERD https://dbdiagram.io/d/5f10695874ca2227330d715d
+
 CREATE DATABASE gameDB;
 USE gameDB;
 
