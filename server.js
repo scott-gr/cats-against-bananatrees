@@ -18,6 +18,7 @@ app.use(express.static('public'));
 
 app.get('/', function (req, res) {
   res.render(__dirname + '/views/index.handlebars');
+
 });
 
 app.get('/game', function (req, res) {
