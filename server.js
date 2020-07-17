@@ -6,13 +6,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // Set Handlebars.
 var exphbs = require('express-handlebars');
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
+
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.render(__dirname + '/views/index.handlebars');
 });
 //Sets up username in array
 users = [];
@@ -38,6 +41,7 @@ io.on('connection', function (socket) {
     io.sockets.emit('newmsg', data);
   });
 });
+
 http.listen(PORT, function () {
   console.log('listening on port: ' + PORT);
 });
