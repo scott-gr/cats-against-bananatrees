@@ -23,8 +23,8 @@ h1 {
 
 .inputbox {
   background-color: #fafafa;
-  width: 72%;
-  margin: 5% 13%;
+  width: 83%;
+  margin: 8% 8%;
   padding: 6%;
   box-shadow: 1px 1px 10px black;
   border-radius: 10px;
@@ -39,10 +39,8 @@ h1 {
   background-color: #6b8445; 
 }
 
-#logo {
-  font-size: 2em;
-  margin-top: 10%;
-  line-height: 120%;
+#button {
+  font-size: 1.5em;
 }
 
 #catImage {
@@ -58,8 +56,16 @@ h1 {
   box-shadow: 1px 1px 10px black;
 }
 
+#logo {
+  font-size: 2em;
+  margin-top: 10%;
+  line-height: 120%;
+}
+
 #name {
   margin: 0% 8%;
+  font-size: 125%;
+  width: 70%;
 }
 
 
