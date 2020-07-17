@@ -3,6 +3,28 @@ body {
   font-family: Helvetica;
 }
 
+h1 {
+  color: #fafafa;
+}
+
+.box {
+  background-color: #fafafa;
+  width: 78%;
+  margin: 5%;
+  padding: 6%;
+  box-shadow: 4px 4px 10px black;
+  border-radius: 10px;
+}
+
+.inputbox {
+  background-color: #fafafa;
+  width: 72%;
+  margin: 5% 13%;
+  padding: 6%;
+  box-shadow: 1px 1px 10px black;
+  border-radius: 10px;
+}
+
 #background {
   position: fixed;
   top: 0;
@@ -14,19 +36,25 @@ body {
 
 #logo {
   font-size: 2em;
+  margin-top: 10%;
 }
 
-.box {
-  background-color: #fafafa;
-  width: 78%;
-  margin: 5%;
-  padding: 6%;
-  box-shadow: 2px 2px 10px black;
+#catImage {
+  width: 50%;
+  position: absolute;
+  top: 20%;
+  left: 40%;
 }
 
 #error-container {
   font-size: 1.5em;
   text-align: center;
+  box-shadow: 1px 1px 10px black;
 }
+
+#name {
+  margin: 4.5%;
+}
+
 
 
