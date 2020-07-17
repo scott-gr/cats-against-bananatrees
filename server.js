@@ -1,33 +1,32 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const PORT = process.env.PORT || 3000
 
-var PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+app.get('/', function(req, res) {
+   res.sendfile('index.html');
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
+users = [];
+io.on('connection', function(socket) {
+   console.log('A user connected');
+   socket.on('setUsername', function(data) {
+      console.log(data);
+      
+      if(users.indexOf(data) > -1) {
+         socket.emit('userExists', data + ' username is taken! Try some other username.');
+      } else {
+         users.push(data);
+         socket.emit('userSet', {username: data});
+      }
+   });
+   
+   socket.on('msg', function(data) {
+      //Send message to everyone
+      io.sockets.emit('newmsg', data);
+   })
 });
 
-http.listen(PORT, () => {
-  console.log('listening on *:3000');
+http.listen(PORT, function() {
+   console.log('listening on PORT: ' + PORT);
 });
-
-io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      console.log('message: ' + msg);
-    });
-  });
-
-  io.on('connection', (socket) => {
-    socket.broadcast.emit('hi');
-  });
-
-  io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
-    });
-  });
