@@ -8,7 +8,8 @@
    }
    let user;
    socket.on("userExists", function (data) {
-     $("#error-container").innerHTML = data;
+     $("#error-container").css("display", "block");
+     $("#error-container").html(data);
    });
    socket.on("userSet", function (data) {
      user = data.username;
@@ -31,4 +32,3 @@
        "<div><b>" + data.user + "</b>: " + data.message + "</div>") 
      }
    });
-

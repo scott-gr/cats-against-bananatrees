@@ -20,6 +20,11 @@ app.get('/', function (req, res) {
   res.render(__dirname + '/views/index.handlebars');
 
 });
+
+app.get('/game', function (req, res) {
+   res.render(__dirname + '/views/game.handlebars');
+ });
+
 //Sets up username in array
 users = [];
 io.on('connection', function (socket) {
@@ -29,7 +34,7 @@ io.on('connection', function (socket) {
     if (users.indexOf(data) > -1) {
       socket.emit(
         'userExists',
-        data + ' You found the princess. BWAH! She is in another house.'
+        'Hello, ' + data
       );
     } else {
       users.push(data);
