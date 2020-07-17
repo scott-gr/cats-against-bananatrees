@@ -3,8 +3,9 @@
    let socket = io();
 
    function setUsername() {
-     socket.emit("setUsername", $("#name").val());
-     
+     location.href = '/game';
+     socket.emit("setUsername", $("#game").val());
+
    }
    let user;
    socket.on("userExists", function (data) {
