@@ -5,12 +5,17 @@ body {
 
 h1 {
   color: #fafafa;
+  position: absolute;
+  left: 40%;
+  font-weight: 400;
+  top: 10%;
+  font-size: 2em;
 }
 
 .box {
   background-color: #fafafa;
-  width: 78%;
-  margin: 5%;
+  width: 70%;
+  margin: 8.5%;
   padding: 6%;
   box-shadow: 4px 4px 10px black;
   border-radius: 10px;
@@ -37,6 +42,7 @@ h1 {
 #logo {
   font-size: 2em;
   margin-top: 10%;
+  line-height: 120%;
 }
 
 #catImage {
@@ -53,7 +59,7 @@ h1 {
 }
 
 #name {
-  margin: 4.5%;
+  margin: 0% 8%;
 }
 
 
