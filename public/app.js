@@ -31,6 +31,13 @@ const submitChat = () => {
   }
 }
 
+const inputKeyUp = (e) => {
+  e.which = e.which || e.keyCode;
+  if(e.which == 13) {
+    submitChat();
+  }
+}
+
 socket.on("newmsg", (data) => {
   const { message, user } = data;
   const now = new Date();
@@ -42,7 +49,8 @@ socket.on("newmsg", (data) => {
   }
   const minutes = now.getMinutes();
   const chatEntry = $(`<li>${user} (${hour}:${minutes}): ${message}</li>`);
-  $("#chatEntries").append(chatEntry);
+  $("#chatEntries").prepend(chatEntry);
+  $("#chatInput").val("");
 })
 
 socket.on("userExists", function (data) {

@@ -1,14 +1,32 @@
 <div id="background">
   <div id="sidebar">
-    <div id="logo" class="box">Cats<br>Against<br>Banana<br>Trees</div>
+    <div 
+      id="logo" 
+      class="box">
+      Cats<br>Against<br>Banana<br>Trees
+    </div>
     <div id="error-container"></div>
-    <div id="chatDisplay">
-      <h2>Chat Thread</h2>
+    <div id="chatDisplay" class="box">
+      Let the trash talk begin:
       <ul id="chatEntries"></ul>
     </div>
-    <input id="chatInput" class="box" type="text" name="name" value="" placeholder="Chat it up">
-    <button id="chatButton" class="buttonBox" type="button" name="button" onclick="submitChat()">
-      Time to talk some shit!
-    </button>
+    <input 
+      id="chatInput" 
+      class="pgButtonBox" 
+      type="text" 
+      name="name" 
+      value="" 
+      placeholder="Time to talk some sh!t"
+      onkeyup="inputKeyUp(event)"
+    >
+    {{!-- <button 
+      id="chatButton" 
+      class="buttonBox" 
+      type="button" 
+      name="button" 
+      onclick="submitChat()"
+    >
+      Enter!
+    </button> --}}
   </div>
 </div>
