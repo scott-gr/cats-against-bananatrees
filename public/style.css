@@ -54,6 +54,10 @@ h1 {
   background-color: #6b8445; 
 }
 
+#beginButton {
+  margin: 7% 8%;
+}
+
 #catImage {
   width: 50%;
   position: absolute;
@@ -79,5 +83,15 @@ h1 {
   width: 70%;
 }
 
+/* Media Queries */
+@media only screen and (min-width: 1024 and max-width: 1199px) {
+  h1 {
+    font-size: 1.5em;
+  }
+}
 
-
+@media only screen and (max-width: 1199px) {
+  h1 {
+    font-size: 1.5em;
+  }
+}
