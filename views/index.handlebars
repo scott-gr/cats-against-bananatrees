@@ -3,22 +3,21 @@
   <img id="catImage" src="/assets/CABTsquare.jpg" alt="A cat against a banana tree">
 </div>
 
-<div id="background">
-  <div id="sidebar">
-    <div id="logo" class="box">Cats<br>Against<br>Banana<br>Trees</div>
-    <input id="indexName" class="box" type="text" name="indexName" value="" onclick="whiteBackground()" placeholder="Enter your clever name" />
-    <button id="button" class="buttonBox" type="button" name="button" onclick="setUsername()">
-      To start a game,<br>click it.<br>Click it good.
-    </button>
-  </div>
+<div id="sidebar">
+  <div id="logo" class="box">Cats<br>Against<br>Banana<br>Trees</div>
+  <input id="indexName" class="box" type="text" name="indexName" value="" onclick="whiteBackground()" placeholder="Enter your clever name" />
+  <div id="error-container" style="display: none"></div>
+  <button id="button" class="buttonBox" type="button" name="button" onclick="setUsername()">
+    To start a game,<br>click it.<br>Click it good.
+  </button>
 </div>
 
-   </button>
-   <div id="message-container">
-      
-   </div>
-   <script src="/socket.io/socket.io.js"></script>
-   <script src="/app.js"></script>
+  </button>
+  <div id="message-container">
+    
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
 </body>
 
 </html>

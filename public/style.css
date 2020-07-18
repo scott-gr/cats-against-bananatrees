@@ -45,13 +45,14 @@ h1 {
   font-size: 1.5em;
 }
 
-#background {
+#sidebar {
   position: fixed;
   top: 0;
   left: 0;
   width: 30%;
   height: 100%;
-  background-color: #6b8445; 
+  background-color: #6b8445;
+  overflow: scroll;
 }
 
 #beginButton {
@@ -79,6 +80,8 @@ h1 {
   font-size: 1.5em;
   text-align: center;
   box-shadow: 1px 1px 10px black;
+  padding: 2%;
+  margin: 9% 0% 0% 0%;
 }
 
 #logo {
@@ -91,6 +94,14 @@ h1 {
   margin: 0% 8%;
   font-size: 125%;
   width: 70%;
+}
+
+#pgMainContent {
+  width: 40%;
+  position: absolute;
+  left: 31%;
+  top: -11%;
+  height: 40%;
 }
 
 /* Media Queries */

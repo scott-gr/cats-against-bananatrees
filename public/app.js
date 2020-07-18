@@ -3,9 +3,7 @@ let user;
 
 function setUsername() {
   const nameInput = $("#indexName").val();
-  sessionStorage.setItem("userName", nameInput);
   if (nameInput !== "") {
-    location.href = "/pregame";
     socket.emit("setUsername", $("#indexName").val());
   } else {
     $("#indexName").css("background-color", "pink");
@@ -56,15 +54,13 @@ socket.on("newmsg", (data) => {
 socket.on("userExists", function (data) {
   $("#error-container").css("display", "block");
   $("#error-container").html(data);
-  console.log("error-container data: " + data);
+  $("#indexName").val("");
 });
 
 socket.on("userSet", function (data) {
-  user = data.username;
-  document.body.innerHTML =
-    '<input type = "text" id = "message">\
-        <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
-        <div id = "message-container"></div>';
+  const { username } = data;
+  sessionStorage.setItem("userName", username);
+  location.href = "/pregame";
 });
 
 socket.on("newmsg", function (data) {

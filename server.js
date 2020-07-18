@@ -36,7 +36,7 @@ io.on("connection", function (socket) {
     if (users.indexOf(data) > -1) {
       socket.emit(
         "userExists",
-        data + " You found the princess. BWAH! She is in another house."
+        `Another "${data}" is already registered.\nThere can be only one.`
       );
     } else {
       users.push(data);
