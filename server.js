@@ -1,20 +1,23 @@
+//dependencies
 const express = require('express');
-const app = express();
 const http = require('http').Server(app);
+const path = require('path');
 const io = require('socket.io')(http);
-const PORT = process.env.PORT || 3000;
-
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-// Set Handlebars.
 const exphbs = require('express-handlebars');
+
+//instances
+const PORT = process.env.PORT || 3000;
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+//static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Set Handlebars.
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-app.use(express.static('public'));
 
 app.get('/', function (req, res) {
   res.render(__dirname + '/views/index.handlebars');

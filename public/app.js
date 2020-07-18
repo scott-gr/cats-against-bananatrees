@@ -1,3 +1,5 @@
+const chatMessages = $('#message');
+
 
 
    let socket = io();
@@ -26,7 +28,6 @@
      }
    }
    socket.on("newmsg", function (data) {
-     console.log("message", data);
      if (user) {$("#message-container").html(
        "<div><b>" + data.user + "</b>: " + data.message + "</div>") 
      }
