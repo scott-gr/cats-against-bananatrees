@@ -33,7 +33,15 @@ const submitChat = () => {
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
-  const chatEntry = $(`<li>${user}: ${message}</li>`);
+  const now = new Date();
+  let hour = now.getHours();
+  if (hour > 12) {
+    hour -= 12;
+  } else if (hour === 0) {
+    hour = 12;
+  }
+  const minutes = now.getMinutes();
+  const chatEntry = $(`<li>${user} (${hour}:${minutes}): ${message}</li>`);
   $("#chatEntries").append(chatEntry);
 })
 
