@@ -44,11 +44,16 @@ io.on("connection", function (socket) {
     }
   });
   //listening for message
-  socket.on("msg", function (data) {
+  socket.on("msg", (data) => {
     console.log("data received:", data);
     //Send message to everyone
     io.sockets.emit("newmsg", data);
   });
+
+  socket.on("arrival", (data) => {
+    console.log("server arrival data:", data);
+    io.sockets.emit("arrivalMessage", data);
+  })
 });
 
 http.listen(PORT, function () {
