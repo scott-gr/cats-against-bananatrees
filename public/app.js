@@ -1,5 +1,4 @@
 let socket = io();
-let user;
 
 function setUsername() {
   const nameInput = $("#indexName").val();
@@ -34,6 +33,15 @@ const inputKeyUp = (e) => {
   if(e.which == 13) {
     submitChat();
   }
+}
+
+const generatePregameDisplay = () => {
+  const user = sessionStorage.getItem("userName");
+  const welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
+  Copy the URL and invite your friends.<br>
+  Once they arrive, start the game.<br>
+  It's that simple.</p>`);
+  $("#pgMainContent").append(welcome);
 }
 
 socket.on("newmsg", (data) => {
