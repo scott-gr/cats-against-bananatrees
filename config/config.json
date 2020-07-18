@@ -9,7 +9,7 @@
     "test": {
       "username": "root",
       "password": "Wino4ever",
-      "database": "database_test",
+      "database": "gameDB",
       "host": "127.0.0.1",
       "dialect": "mysql"
     },
