@@ -1,10 +1,23 @@
 <div id="background">
   <div id="sidebar">
-    <div id="logo" class="box">Cats<br>Against<br>Banana<br>Trees</div>
+    <div 
+      id="logo" 
+      class="box">
+      Cats<br>Against<br>Banana<br>Trees
+    </div>
     <div id="error-container"></div>
-    <input id="name" type="text" name="name" value="" placeholder="Enter your clever name" />
-    <button type="button" name="button" onclick="setUsername()">
-      Time to talk some shit!
-    </button>
+    <div id="chatDisplay" class="box">
+      Let the trash talk begin:
+      <ul id="chatEntries"></ul>
+    </div>
+    <input 
+      id="chatInput" 
+      class="pgButtonBox" 
+      type="text" 
+      name="name" 
+      value="" 
+      placeholder="Time to talk some sh!t"
+      onkeyup="inputKeyUp(event)"
+    >
   </div>
 </div>
