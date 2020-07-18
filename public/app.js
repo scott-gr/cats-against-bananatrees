@@ -66,13 +66,7 @@ socket.on("userSet", function (data) {
         <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
         <div id = "message-container"></div>';
 });
-// function sendMessage(data) {
-//   console.log("message for you, sir", data);
-//   let msg = $("#message").val();
-//   if (msg) {
-//     socket.emit("msg", { message: msg, user: user });
-//   }
-// }
+
 socket.on("newmsg", function (data) {
   console.log("message", data);
   if (user) {
