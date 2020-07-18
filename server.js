@@ -1,30 +1,23 @@
 const express = require('express');
-const app = express();
+const exphbs = require('express-handlebars');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+
 const PORT = process.env.PORT || 3000;
-
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Set Handlebars.
-const exphbs = require('express-handlebars');
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-app.use(express.static('public'));
+app.use(express.static(path.join('public')));
 
 app.get('/', function (req, res) {
   res.render(__dirname + '/views/index.handlebars');
 
 });
-
-app.get('/game', function (req, res) {
-   res.render(__dirname + '/views/game.handlebars');
- });
-
 //Sets up username in array
 users = [];
 io.on('connection', function (socket) {
@@ -34,7 +27,7 @@ io.on('connection', function (socket) {
     if (users.indexOf(data) > -1) {
       socket.emit(
         'userExists',
-        'Hello, ' + data
+        data + ' You found the princess. BWAH! She is in another house.'
       );
     } else {
       users.push(data);
