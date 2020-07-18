@@ -3,22 +3,16 @@ let socket = io();
 function setUsername() {
   const nameInput = $("#name").val();
   if (nameInput !== "") {
-    location.href = "/game";
-    socket.emit("setUsername", $("#game").val());
+    location.href = "/pregame";
+    socket.emit("setUsername", $("#name").val());
   } 
   else {
-    console.log("placeholder");
     $("#name").css("background-color", "pink");
   }
 }
 
 const whiteBackground = () => {
   $("#name").css("background-color", "white");
-}
-
-const enableButton = (event) => {
-  console.log("called");
-  console.log(event);
 }
 
 let user;
