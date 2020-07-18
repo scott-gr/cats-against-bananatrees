@@ -19,6 +19,7 @@ app.use(express.static('public'));
 // View Routes
 app.get('/', function (req, res) {
   res.render(__dirname + '/views/index.handlebars');
+
 });
 
 app.get('/pregame', function (req, res) {
