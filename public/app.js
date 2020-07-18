@@ -43,11 +43,12 @@ const generatePregameDisplay = () => {
     getNewUserName();
   } else {
     let welcome;
-    if (isHost === true) {
+    if (isHost === "true") {
       welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
       Copy the URL and invite your friends.<br>
       Once they arrive, start the game.<br>
       It's that simple.</p>`);
+      generateStartGameButton();
     } else {
       welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
       Copy the URL and invite your friends.<br>
@@ -56,6 +57,22 @@ const generatePregameDisplay = () => {
     }
     $("#welcome").append(welcome);
   }
+};
+
+const generateStartGameButton = () => {
+  const startGameButton = $(`
+  <button 
+    id="beginButton" 
+    class="pgButtonBox" 
+    type="pregame-button" 
+    name="button" 
+    onclick="submitChat()"
+    style="display: block;"
+  >
+    Let the games begin!
+  </button>
+  `);
+  $("#startButtonContainer").append(startGameButton);
 };
 
 const getNewUserName = () => {

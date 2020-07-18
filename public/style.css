@@ -84,17 +84,18 @@ h1 {
   margin: 9% 0% 0% 0%;
 }
 
+#indexName {
+  margin: 0% 8%;
+  font-size: 125%;
+  width: 70%;
+}
+
 #logo {
   font-size: 2em;
   margin-top: 10%;
   line-height: 120%;
 }
 
-#indexName {
-  margin: 0% 8%;
-  font-size: 125%;
-  width: 70%;
-}
 
 #pgMainContent {
   width: 40%;
