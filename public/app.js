@@ -2,18 +2,22 @@ let socket = io();
 
 function setUsername() {
   const nameInput = $("#indexName").val();
+  sessionStorage.setItem("hostName", nameInput);
   if (nameInput !== "") {
     location.href = "/pregame";
     socket.emit("setUsername", $("#indexName").val());
-  } 
-  else {
+  } else {
     $("#indexName").css("background-color", "pink");
   }
 }
 
+function getHostName() {
+  console.log(sessionStorage.getItem("hostName"));
+}
+
 const whiteBackground = () => {
   $("#indexName").css("background-color", "white");
-}
+};
 
 let user;
 socket.on("userExists", function (data) {
