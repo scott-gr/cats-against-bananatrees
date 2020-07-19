@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
-app.get("/", function (req, res) {
-  res.render(__dirname + "/views/index.handlebars");
+router.get("/", function (req, res) {
+  res.render("../views/index.handlebars");
 });
 
-app.get("/pregame", function (req, res) {
-  res.render(__dirname + "/views/pregame.handlebars");
+router.get("/pregame", function (req, res) {
+  res.render("../views/pregame.handlebars");
 });
 
-app.get("/game", function (req, res) {
-  res.render(__dirname + "/views/game.handlebars");
+router.get("/game", function (req, res) {
+  res.render("../views/game.handlebars");
 });
 
 module.exports = router;
