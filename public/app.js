@@ -56,6 +56,7 @@ const generatePregameDisplay = () => {
       Wait patiently.</p>`);
     }
     $("#welcome").append(welcome);
+    socket.emit("arrival");
   }
 };
 
@@ -66,7 +67,6 @@ const generateStartGameButton = () => {
     class="pgButtonBox" 
     type="pregame-button" 
     name="button" 
-    onclick="submitChat()"
     style="display: block;"
   >
     Let the games begin!
@@ -99,16 +99,30 @@ socket.on("newmsg", (data) => {
   $("#chatInput").val("");
 });
 
-socket.on("userExists", function (data) {
+socket.on("userExists", (data) => {
   $("#error-container").css("display", "block");
   $("#error-container").html(data);
   $("#indexName").val("");
 });
 
-socket.on("userSet", function (data) {
+socket.on("userSet", (data) => {
   const { username } = data;
   sessionStorage.setItem("userName", username);
   location.href = "/pregame";
+});
+
+socket.on("userList", (data) => {
+  $("#pgPlayersList").empty();
+  data.forEach((playerName) => {
+    $("#pgPlayersList").append($(`<p>${playerName}</p>`));
+  });
+  
+  const beginButton = $("#beginButton");
+  if (data.length > 1 && beginButton) {
+    beginButton.click(() => {
+      socket.emit("startGameClick");
+    })
+  }
 });
 
 socket.on("newmsg", (data) => {
@@ -120,6 +134,6 @@ socket.on("newmsg", (data) => {
   }
 });
 
-socket.on("arrivalMessage", (data) => {
-  console.log("app arrival data:", data);
-});
+socket.on("startGame", () => {
+  location.href = "/game";
+})

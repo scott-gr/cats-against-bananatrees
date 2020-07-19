@@ -50,12 +50,16 @@ io.on("connection", function (socket) {
     io.sockets.emit("newmsg", data);
   });
 
-  socket.on("arrival", (data) => {
-    console.log("server arrival data:", data);
-    io.sockets.emit("arrivalMessage", data);
-  })
+  socket.on("arrival", () => {
+    io.sockets.emit("userList", users);
+  });
+
+  socket.on("startGameClick", () => {
+    io.sockets.emit("startGame", users);
+  });
+
 });
 
-http.listen(PORT, function () {
+http.listen(PORT, () => {
   console.log("listening on port: " + PORT);
 });
