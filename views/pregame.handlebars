@@ -1,26 +1,25 @@
-<div id="background">
-  <div id="sidebar">
-    <div id="logo" class="box">
-      Cats<br>Against<br>Banana<br>Trees
-    </div>
-    <button 
-      class="pgButtonBox" 
-      type="pregame-button" 
-      name="button" 
-      onclick=""
-    >
-      Copy URL
-    </button>
-    <button 
-      id="beginButton" 
-      class="pgButtonBox" 
-      type="pregame-button" 
-      name="button" 
-      onclick="submitChat()"
-      style="display: block;"
-    >
-      Let the games begin!
-    </button>
-    <div id="game"></div>
-  </div>
+<div id="pgMainContent" class="box">
+  <div id="welcome"></div>
+  <div id="playersListTitle">Players List:</div>
+  <div id="pgPlayersList"></div>
 </div>
+
+<div id="sidebar">
+  <div id="logo" class="box">
+    Cats<br>Against<br>Banana<br>Trees
+  </div>
+  <button 
+    class="pgButtonBox" 
+    type="pregame-button" 
+    name="button" 
+    onclick=""
+  >
+    Copy URL
+  </button>
+  <div id="startButtonContainer"></div>
+</div>
+<script>
+  $("document").ready(() => {
+    generatePregameDisplay()
+  });
+</script>

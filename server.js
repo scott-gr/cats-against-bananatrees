@@ -36,7 +36,7 @@ io.on("connection", function (socket) {
     if (users.indexOf(data) > -1) {
       socket.emit(
         "userExists",
-        data + " You found the princess. BWAH! She is in another house."
+        `Another "${data}" is already registered.\nThere can be only one.`
       );
     } else {
       users.push(data);
@@ -44,13 +44,27 @@ io.on("connection", function (socket) {
     }
   });
   //listening for message
-  socket.on("msg", function (data) {
+  socket.on("msg", (data) => {
     console.log("data received:", data);
     //Send message to everyone
     io.sockets.emit("newmsg", data);
   });
+
+  socket.on("arrival", () => {
+    io.sockets.emit("userList", users);
+  });
+
+  socket.on("startGameClick", () => {
+    io.sockets.emit("startGame", users);
+  });
+
+  socket.on("playerLeft", (playerLeaving) => {
+    users = users.filter((userName) => userName !== playerLeaving);
+    io.sockets.emit("userList", users);
+  });
+
 });
 
-http.listen(PORT, function () {
+http.listen(PORT, () => {
   console.log("listening on port: " + PORT);
 });
