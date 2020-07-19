@@ -58,6 +58,11 @@ io.on("connection", function (socket) {
     io.sockets.emit("startGame", users);
   });
 
+  socket.on("playerLeft", (playerLeaving) => {
+    users = users.filter((userName) => userName !== playerLeaving);
+    io.sockets.emit("userList", users);
+  });
+
 });
 
 http.listen(PORT, () => {

@@ -96,6 +96,10 @@ h1 {
   line-height: 120%;
 }
 
+#playersListTitle {
+  font-size: 1.5em;
+  padding: 10% 0% 0% 0%;
+}
 
 #pgMainContent {
   width: 40%;
@@ -104,6 +108,11 @@ h1 {
   top: -11%;
   height: 40%;
   padding: 2% 8% 10% 3%;
+}
+
+#pgPlayersList {
+  font-size: 1.5em;
+  padding: 2% 0% 1% 0%;
 }
 
 #welcomeText {

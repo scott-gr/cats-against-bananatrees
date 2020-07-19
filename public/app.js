@@ -42,21 +42,15 @@ const generatePregameDisplay = () => {
   if (!user) {
     getNewUserName();
   } else {
-    let welcome;
     if (isHost === "true") {
-      welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
+      const welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
       Copy the URL and invite your friends.<br>
       Once they arrive, start the game.<br>
       It's that simple.</p>`);
       generateStartGameButton();
-    } else {
-      welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
-      Copy the URL and invite your friends.<br>
-      Once everyone arrives, the host will start the game.<br>
-      Wait patiently.</p>`);
-    }
-    $("#welcome").append(welcome);
-    socket.emit("arrival");
+      $("#welcome").append(welcome);
+      socket.emit("arrival");
+    } 
   }
 };
 
@@ -108,7 +102,16 @@ socket.on("userExists", (data) => {
 socket.on("userSet", (data) => {
   const { username } = data;
   sessionStorage.setItem("userName", username);
-  location.href = "/pregame";
+  if (location.href.indexOf("/pregame") === -1) {
+    location.href = "/pregame";
+  } else {
+    const welcome = $(`<p id="welcomeText">Hello, ${username}.<br>
+    Copy the URL and invite your friends.<br>
+    Once everyone arrives, the host will start the game.<br>
+    Wait patiently.</p>`);
+    $("#welcome").append(welcome);
+    socket.emit("arrival");
+  }
 });
 
 socket.on("userList", (data) => {
@@ -116,12 +119,12 @@ socket.on("userList", (data) => {
   data.forEach((playerName) => {
     $("#pgPlayersList").append($(`<p>${playerName}</p>`));
   });
-  
+
   const beginButton = $("#beginButton");
   if (data.length > 1 && beginButton) {
     beginButton.click(() => {
       socket.emit("startGameClick");
-    })
+    });
   }
 });
 
@@ -136,4 +139,12 @@ socket.on("newmsg", (data) => {
 
 socket.on("startGame", () => {
   location.href = "/game";
-})
+});
+
+$(window).on("beforeunload", () => {
+  const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
+  if (isCurrentPagePregame === true) {
+    const playerLeaving = sessionStorage.getItem("userName");
+    socket.emit("playerLeft", playerLeaving);
+  }
+});
