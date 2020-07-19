@@ -1,5 +1,17 @@
 let socket = io();
 
+
+
+function getQuestionCards() {
+  $.get("/api/question_cards", function(data) {
+    questionCards = data;
+    // let randomQuestion = data[Math.floor(Math.random() * data.length)]
+    console.log("random question", randomQuestion)
+  //   initializeRows();
+  });
+}
+
+=======
 // validation for name input, stores first user as host
 const roomInit = () => {
   const nameInput = $("#indexName").val();
@@ -183,10 +195,14 @@ socket.on("newmsg", (data) => {
 
 socket.on("startGame", () => {
   location.href = "/game";
+
+  getQuestionCards()
+
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
     createNewRoom();
   }
+
 });
 
 $(window).on("beforeunload", () => {
