@@ -1,0 +1,134 @@
+body {
+  background-color: black;
+  font-family: Helvetica;
+}
+
+h1 {
+  color: #fafafa;
+  position: absolute;
+  left: 40%;
+  font-weight: 400;
+  top: 10%;
+  font-size: 2em;
+}
+
+.box {
+  background-color: #fafafa;
+  width: 70%;
+  margin: 8.5%;
+  padding: 6%;
+  box-shadow: 4px 4px 10px black;
+  border-radius: 10px;
+}
+
+.buttonBox {
+  background-color: #fafafa;
+  width: 83%;
+  margin: 8% 8%;
+  padding: 6%;
+  box-shadow: 1px 1px 10px black;
+  border-radius: 10px;
+  font-size: 1.5em;
+}
+
+.buttonBox:hover {
+  box-shadow: inset 0px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.pgButtonBox {
+  background-color: #fafafa;
+  width: 83%;
+  margin: 0% 8%;
+  padding: 6%;
+  box-shadow: 1px 1px 10px black;
+  border-radius: 10px;
+  font-size: 1.5em;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background-color: #6b8445;
+  overflow: scroll;
+}
+
+#beginButton {
+  margin: 7% 8%;
+}
+
+#catImage {
+  width: 50%;
+  position: absolute;
+  top: 20%;
+  left: 40%;
+}
+
+#chatDisplay {
+  height: 150px;
+  overflow: scroll;
+}
+
+#chatInput {
+  font-size: 1em;
+  width: 70%;
+}
+
+#error-container {
+  font-size: 1.5em;
+  text-align: center;
+  box-shadow: 1px 1px 10px black;
+  padding: 2%;
+  margin: 9% 0% 0% 0%;
+}
+
+#indexName {
+  margin: 0% 8%;
+  font-size: 125%;
+  width: 70%;
+}
+
+#logo {
+  font-size: 2em;
+  margin-top: 10%;
+  line-height: 120%;
+}
+
+#playersListTitle {
+  font-size: 1.5em;
+  padding: 10% 0% 0% 0%;
+}
+
+#pgMainContent {
+  width: 40%;
+  position: absolute;
+  left: 31%;
+  top: -11%;
+  height: 40%;
+  padding: 2% 8% 10% 3%;
+}
+
+#pgPlayersList {
+  font-size: 1.5em;
+  padding: 2% 0% 1% 0%;
+}
+
+#welcomeText {
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+
+/* Media Queries */
+@media only screen and (min-width: 1024 and max-width: 1199px) {
+  h1 {
+    font-size: 1.5em;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  h1 {
+    font-size: 1.5em;
+  }
+}
