@@ -4,6 +4,7 @@ const path = require("path");
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
+const db = require("./models");
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
@@ -26,6 +27,9 @@ app.get("/pregame", function (req, res) {
 app.get("/game", function (req, res) {
   res.render(__dirname + "/views/game.handlebars");
 });
+
+const apiRoutes = require("./controllers/apiController.js");
+app.use(apiRoutes);
 
 //Sets up username in array
 users = [];
@@ -65,6 +69,12 @@ io.on("connection", function (socket) {
 
 });
 
-http.listen(PORT, () => {
-  console.log("listening on port: " + PORT);
+require("./controllers/roomsController.js")(app);
+
+db.sequelize.sync().then(function() {
+  http.listen(PORT, () => {
+    console.log("listening on port: " + PORT);
+  });
 });
+
+
