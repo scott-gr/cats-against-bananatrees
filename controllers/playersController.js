@@ -1,27 +1,28 @@
 const db = require("../models");
 
 module.exports = function (router) {
-  // GET request not currently needed, TBD
-  // router.get("/api/getallrooms", (req, res) => {
-  //   db.Rooms.findAll({
-  //     attributes: ["id"],
-  //   })
-  //     .then((result) => {
-  //       res.json({
-  //         error: false,
-  //         data: result,
-  //         message: "Successfully retrieved rooms",
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       res.status(500).json({
-  //         error: true,
-  //         data: null,
-  //         message: "Unable to retrieve rooms.",
-  //       });
-  //     });
-  // });
+  router.get("/api/getroomplayers/:roomid", (req, res) => {
+    db.Players.findAll({
+      where: {
+        room_id: req.params.roomid,
+      },
+    })
+      .then((result) => {
+        res.json({
+          error: false,
+          data: result,
+          message: "Successfully retrieved players",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: "Unable to retrieve players.",
+        });
+      });
+  });
 
   router.post("/api/createplayer", (req, res) => {
     db.Players.create({
@@ -31,6 +32,7 @@ module.exports = function (router) {
       room_id: req.body.room_id
     })
       .then((result) => {
+        console.log("Player post call:", result);
         res.json({
           error: false,
           data: result,
