@@ -3,7 +3,7 @@ module.exports = function (sequelize, DataTypes) {
     "Players",
     {
       name: DataTypes.STRING,
-      socket_id: DataTypes.INTEGER,
+      socket_id: DataTypes.STRING,
       points: DataTypes.INTEGER,
       room_id: DataTypes.INTEGER
     },

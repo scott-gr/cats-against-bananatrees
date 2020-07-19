@@ -24,7 +24,12 @@ module.exports = function (router) {
   // });
 
   router.post("/api/createplayer", (req, res) => {
-    db.Players.create(req.body)
+    db.Players.create({
+      name: req.body.name,
+      socket_id: req.body.socket_id,
+      points: 0,
+      room_id: req.body.room_id
+    })
       .then((result) => {
         res.json({
           error: false,
