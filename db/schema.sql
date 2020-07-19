@@ -18,7 +18,7 @@ CREATE TABLE `rounds` (
 CREATE TABLE `players` (
   `id` int PRIMARY KEY,
   `name` varchar(255),
-  `socket_id` int,
+  `socket_id` varchar(255),
   `points` int,
   `room_id` int
 );

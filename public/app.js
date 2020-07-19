@@ -5,13 +5,12 @@ let socket = io();
 function getQuestionCards() {
   $.get("/api/question_cards", function(data) {
     questionCards = data;
-    // let randomQuestion = data[Math.floor(Math.random() * data.length)]
+    let randomQuestion = data[Math.floor(Math.random() * data.length)]
     console.log("random question", randomQuestion)
   //   initializeRows();
   });
 }
 
-=======
 // validation for name input, stores first user as host
 const roomInit = () => {
   const nameInput = $("#indexName").val();
@@ -131,8 +130,28 @@ const createNewRoom = () => {
   });
 }
 
+const createPlayer = (roomId, playerName) => {
+  $.ajax({
+    url: "/api/createplayer",
+    data: {
+      "room_id": roomId,
+      "socket_id": "4jklf678ahk",
+      "name": playerName
+    },
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    console.log("player", id);
+    // socket.emit("playerCreated", id);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
 socket.on("confirmRoomCreated", (id) => {
   sessionStorage.setItem("roomId", id);
+  const playerName = sessionStorage.getItem("userName");
+  createPlayer(id, playerName);
 })
 
 socket.on("newmsg", (data) => {
