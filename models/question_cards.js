@@ -11,15 +11,6 @@ module.exports = function (sequelize, DataTypes) {
  
 };
 
-// function getQuestionCards() {
-//   $.get("/api/question_cards", function(data) {
-//     questionCards = data;
-//     console.log("Question card data", data)
-//   //   initializeRows();
-//   });
-// }
-
-// module.exports.getQuestionCards = getQuestionCards
 
 
 

@@ -64,7 +64,6 @@ io.on("connection", function (socket) {
   socket.on("roomCreated", (id) => {
     io.sockets.emit("confirmRoomCreated", id);
   })
-
 });
 
 require("./controllers/roomsController.js")(app);
