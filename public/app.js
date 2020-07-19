@@ -6,7 +6,6 @@ function getQuestionCards() {
   $.get("/api/question_cards", function(data) {
     questionCards = data;
     let randomQuestion = data[Math.floor(Math.random() * data.length)]
-    console.log("random question", randomQuestion)
   //   initializeRows();
   });
 }
@@ -101,6 +100,21 @@ const getNewUserName = () => {
   }
 };
 
+const createRound = (roomId) => {
+  $.ajax({
+    url: "/api/createround",
+    data: {
+      "room_id": roomId,
+      "game_round": 1
+    },
+    method: "POST"
+  }).then((res) => {
+    console.log(res);
+  }).catch((err) => {
+    console.log(err);
+  });
+};
+
 // GET call to get the new room id
 // const getNewRoomId = () => {
 //   $.ajax({
@@ -125,6 +139,7 @@ const createNewRoom = () => {
   }).then((res) => {
     const { data: {id} } = res;
     socket.emit("roomCreated", id);
+    createRound(id);
   }).catch((err) => {
     console.log(err);
   });
@@ -135,14 +150,14 @@ const createPlayer = (roomId, playerName) => {
     url: "/api/createplayer",
     data: {
       "room_id": roomId,
-      "socket_id": "4jklf678ahk",
+      "socket_id": "",
       "name": playerName
     },
     method: "POST"
   }).then((res) => {
     const { data: {id} } = res;
-    console.log("player", id);
-    // socket.emit("playerCreated", id);
+    sessionStorage.setItem("playerId", id);
+    location.href = "/game";
   }).catch((err) => {
     console.log(err);
   });
@@ -213,7 +228,6 @@ socket.on("newmsg", (data) => {
 });
 
 socket.on("startGame", () => {
-  location.href = "/game";
 
   getQuestionCards()
 
@@ -224,10 +238,10 @@ socket.on("startGame", () => {
 
 });
 
-$(window).on("beforeunload", () => {
-  const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
-  if (isCurrentPagePregame === true) {
-    const playerLeaving = sessionStorage.getItem("userName");
-    socket.emit("playerLeft", playerLeaving);
-  }
-});
+// $(window).on("beforeunload", () => {
+//   const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
+//   if (isCurrentPagePregame === true) {
+//     const playerLeaving = sessionStorage.getItem("userName");
+//     socket.emit("playerLeft", playerLeaving);
+//   }
+// });

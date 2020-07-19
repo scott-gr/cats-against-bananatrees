@@ -41,13 +41,35 @@ module.exports = function (router) {
       });
   });
 
-  router.post("/api/createnewroom", (req, res) => {
-    db.Rooms.create(req.body)
+  router.put("/api/updateroom", (req, res) => {
+    //   db.Post.update(req.body,
+    //     {
+    //       where: {
+    //         id: req.body.id
+    //       }
+    //     })
+    //     .then(function(dbPost) {
+    //       res.json(dbPost);
+    //     });
+    // });
+    db.Rooms.update(
+      {
+        host_id: req.body.host_id,
+        player_count: req.body.player_count,
+        current_round_id: req.body.current_round_id,
+      },
+      {
+        where: {
+          id: req.body.id,
+        },
+      }
+    )
       .then((result) => {
+        console.log("room put route:", result);
         res.json({
           error: false,
           data: result,
-          message: "Successfully created new room",
+          message: "Successfully updated room",
         });
       })
       .catch((err) => {
@@ -55,7 +77,7 @@ module.exports = function (router) {
         res.status(500).json({
           error: true,
           data: null,
-          message: "Unable to create new room.",
+          message: "Unable to update room.",
         });
       });
   });
