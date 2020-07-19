@@ -109,7 +109,9 @@ const createRound = (roomId) => {
     },
     method: "POST"
   }).then((res) => {
-    console.log(res);
+    const { data: {id} } = res;
+    sessionStorage.setItem("roundId", id);
+    getPlayers(roomId);
   }).catch((err) => {
     console.log(err);
   });
@@ -158,6 +160,18 @@ const createPlayer = (roomId, playerName) => {
     const { data: {id} } = res;
     sessionStorage.setItem("playerId", id);
     location.href = "/game";
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const getPlayers = (roomId) => {
+  $.ajax({
+    url: "/api/getroomplayers/" + roomId,
+    method: "GET"
+  }).then((res) => {
+    const { data } = res;
+    sessionStorage.setItem("playerCount", data.length);
   }).catch((err) => {
     console.log(err);
   });
