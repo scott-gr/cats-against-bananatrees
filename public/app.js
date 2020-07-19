@@ -117,22 +117,6 @@ const createRound = (roomId) => {
   });
 };
 
-// GET call to get the new room id
-// const getNewRoomId = () => {
-//   $.ajax({
-//     url: "/api/getallrooms",
-//     method: "GET"
-//   }).then((res) => {
-//     const { data } = res;
-//     const idArr = data.map((idObj) => idObj.id);
-//     const highestId = Math.max(...idArr);
-//     const newRoomId = highestId + 1;
-//     createNewRoom(newRoomId);
-//   }).catch((err) => {
-//     console.log(err);
-//   });
-// }
-
 const createNewRoom = () => {
   $.ajax({
     url: "/api/createnewroom",
@@ -141,7 +125,6 @@ const createNewRoom = () => {
   }).then((res) => {
     const { data: {id} } = res;
     socket.emit("roomCreated", id);
-    createRound(id);
   }).catch((err) => {
     console.log(err);
   });
@@ -159,7 +142,12 @@ const createPlayer = (roomId, playerName) => {
   }).then((res) => {
     const { data: {id} } = res;
     sessionStorage.setItem("playerId", id);
-    location.href = "/game";
+    const isHost = sessionStorage.getItem("isHost");
+    if (isHost === "true") {
+      createRound(roomId);
+    } else {
+      location.href = "/game";
+    }
   }).catch((err) => {
     console.log(err);
   });
@@ -171,7 +159,24 @@ const getPlayers = (roomId) => {
     method: "GET"
   }).then((res) => {
     const { data } = res;
-    sessionStorage.setItem("playerCount", data.length);
+    const playerCount = data.length;
+    sessionStorage.setItem("playerCount", playerCount);
+    const playerId = sessionStorage.getItem("playerId");
+    const currentRoundId = sessionStorage.getItem("roundId");
+    updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
+    location.href = "/game";
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const updateRoom = (roomId, playerCount, playerId, currentRoundId) => {
+  $.ajax({
+    url: "/api/updateroom",
+    method: "PUT",
+    data: {roomId, playerCount, playerId, currentRoundId}
+  }).then((res) => {
+    console.log(res);
   }).catch((err) => {
     console.log(err);
   });
