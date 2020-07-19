@@ -14,18 +14,8 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use(express.static(path.join("public")));
 
-// View Routes
-app.get("/", function (req, res) {
-  res.render(__dirname + "/views/index.handlebars");
-});
-
-app.get("/pregame", function (req, res) {
-  res.render(__dirname + "/views/pregame.handlebars");
-});
-
-app.get("/game", function (req, res) {
-  res.render(__dirname + "/views/game.handlebars");
-});
+const viewRoutes = require("./controllers/viewsController.js");
+app.use(viewRoutes);
 
 //Sets up username in array
 users = [];
