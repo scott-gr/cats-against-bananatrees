@@ -69,6 +69,7 @@ io.on("connection", function (socket) {
 
 require("./controllers/roomsController.js")(app);
 require("./controllers/questionCardsController.js")(app);
+require("./controllers/playersController.js")(app);
 
 db.sequelize.sync().then(function() {
   http.listen(PORT, () => {
