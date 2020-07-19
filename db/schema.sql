@@ -46,11 +46,11 @@ CREATE TABLE `playersAnswerCards` (
   `answer_card_id` int
 );
 
-ALTER TABLE `players` ADD FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+ALTER TABLE `players` ADD FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`);
 
-ALTER TABLE `rounds` ADD FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+ALTER TABLE `rounds` ADD FOREIGN KEY (`room_id`) REFERENCES `Room` (`id`);
 
-ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `rooms` (`current_round_id`);
+ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `Rooms` (`current_round_id`);
 
 ALTER TABLE `players` ADD FOREIGN KEY (`id`) REFERENCES `rounds` (`judge_id`);
 

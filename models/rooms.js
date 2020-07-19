@@ -1,9 +1,15 @@
 module.exports = function (sequelize, DataTypes) {
-  const Rooms = sequelize.define("Rooms", {
-    host_id: DataTypes.INTEGER,
-    player_count: DataTypes.INTEGER,
-    current_round_id: DataTypes.INTEGER,
-  });
+  const Rooms = sequelize.define(
+    "Rooms",
+    {
+      host_id: DataTypes.INTEGER,
+      player_count: DataTypes.INTEGER,
+      current_round_id: DataTypes.INTEGER,
+    },
+    {
+      timestamps: false,
+    }
+  );
 
   // Rooms.associate = function (models) {
   //   Rooms.hasMany(models.Players, {
@@ -25,4 +31,3 @@ module.exports = function (sequelize, DataTypes) {
 
   return Rooms;
 };
-
