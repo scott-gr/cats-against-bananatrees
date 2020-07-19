@@ -1,5 +1,15 @@
 let socket = io();
 
+
+function getQuestionCards() {
+  $.get("/api/question_cards", function(data) {
+    questionCards = data;
+    // let randomQuestion = data[Math.floor(Math.random() * data.length)]
+    console.log("random question", randomQuestion)
+  //   initializeRows();
+  });
+}
+
 const roomInit = () => {
   const nameInput = $("#indexName").val();
   if (nameInput !== "") {
@@ -139,6 +149,7 @@ socket.on("newmsg", (data) => {
 
 socket.on("startGame", () => {
   location.href = "/game";
+  getQuestionCards()
 });
 
 $(window).on("beforeunload", () => {

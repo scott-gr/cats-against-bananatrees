@@ -1,7 +1,4 @@
-// const express = require("express");
-// const router = express.Router();
 const db = require("../models");
-
 module.exports = function (router) {
   router.get("/api/getallrooms", (req, res) => {
     db.Rooms.findAll({
@@ -23,23 +20,25 @@ module.exports = function (router) {
         });
       });
   });
+  router.post("/api/createnewroom", (req, res) => {
+    db.Rooms.create(req.body)
+      .then((result) => {
+        res.json({
+          error: false,
+          data: result,
+          message: "Successfully created new room",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: "Unable to create new room.",
+        });
+      });
+  });
 };
 
-// router.post("/", (req, res) => {
-//   db.Rooms.create(req.body)
-//     .then((result) => {
-//       res.json({
-//         error: false,
-//         data: result,
-//         message: "Successfully created new room",
-//       });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(500).json({
-//         error: true,
-//         data: null,
-//         message: "Unable to create new room.",
-//       });
-//     });
-// });
+
+
