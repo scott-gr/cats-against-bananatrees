@@ -1,7 +1,7 @@
 {
     "development": {
       "username": "root",
-      "password": "Wino4ever", ///enter your password
+      "password": "Wino4ever",
       "database": "gameDB",
       "host": "127.0.0.1",
       "dialect": "mysql"

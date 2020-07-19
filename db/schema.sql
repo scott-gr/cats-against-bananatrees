@@ -1,4 +1,4 @@
-CREATE TABLE `rooms` (
+CREATE TABLE `Rooms` (
   `id` int PRIMARY KEY,
   `host_id` int,
   `player_count` int,
