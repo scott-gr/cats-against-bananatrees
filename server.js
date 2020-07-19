@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Set Handlebars.
 
+// Set Handlebars.
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use(express.static(path.join("public")));
@@ -20,8 +20,6 @@ app.use(viewRoutes);
 
 const apiRoutes = require("./controllers/apiController.js");
 app.use(apiRoutes);
-
-
 
 //Sets up username in array
 users = [];
@@ -64,12 +62,12 @@ io.on("connection", function (socket) {
   socket.on("roomCreated", (id) => {
     io.sockets.emit("confirmRoomCreated", id);
   })
-
 });
 
 require("./controllers/roomsController.js")(app);
 require("./controllers/questionCardsController.js")(app);
 require("./controllers/playersController.js")(app);
+require("./controllers/roundsController.js")(app);
 
 db.sequelize.sync().then(function() {
   http.listen(PORT, () => {
