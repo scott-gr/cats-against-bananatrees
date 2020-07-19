@@ -42,25 +42,19 @@ module.exports = function (router) {
   });
 
   router.put("/api/updateroom", (req, res) => {
-    //   db.Post.update(req.body,
-    //     {
-    //       where: {
-    //         id: req.body.id
-    //       }
-    //     })
-    //     .then(function(dbPost) {
-    //       res.json(dbPost);
-    //     });
-    // });
+    const playerId = parseInt(req.body.playerId)
+    const playerCount = parseInt(req.body.playerCount);
+    const currentRoundId = parseInt(req.body.currentRoundId);
+    const roomId = parseInt(req.body.roomId);
     db.Rooms.update(
       {
-        host_id: req.body.host_id,
-        player_count: req.body.player_count,
-        current_round_id: req.body.current_round_id,
+        host_id: playerId,
+        player_count: playerCount,
+        current_round_id: currentRoundId
       },
       {
         where: {
-          id: req.body.id,
+          id: roomId,
         },
       }
     )
