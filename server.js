@@ -3,7 +3,7 @@ const exphbs = require("express-handlebars");
 const path = require("path");
 const app = express();
 const http = require("http").createServer(app);
-// const io = require("socket.io")(http);
+const io = require("socket.io")(http);
 const db = require('./models');
 const PORT = process.env.PORT || 3000;
 console.log("*****1");
