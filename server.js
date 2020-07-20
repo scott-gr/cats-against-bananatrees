@@ -8,19 +8,19 @@ const io = require("socket.io")(http);
 const db = require("./models");
 const PORT = process.env.PORT || 3000;
 
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// // Set Handlebars.
-// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-// app.set("view engine", "handlebars");
-// app.use(express.static(path.join("public")));
+// Set Handlebars.
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+app.use(express.static(path.join("public")));
 
-// const viewRoutes = require("./controllers/viewsController.js");
-// app.use(viewRoutes);
+const viewRoutes = require("./controllers/viewsController.js");
+app.use(viewRoutes);
 
-// const apiRoutes = require("./controllers/apiController.js");
-// app.use(apiRoutes);
+const apiRoutes = require("./controllers/apiController.js");
+app.use(apiRoutes);
 
 // //Sets up username in array
 // users = [];
@@ -65,18 +65,18 @@ const PORT = process.env.PORT || 3000;
 //   });
 // });
 
-// require("./controllers/roomsController.js")(app);
-// require("./controllers/questionCardsController.js")(app);
-// require("./controllers/playersController.js")(app);
-// require("./controllers/roundsController.js")(app);
+require("./controllers/roomsController.js")(app);
+require("./controllers/questionCardsController.js")(app);
+require("./controllers/playersController.js")(app);
+require("./controllers/roundsController.js")(app);
 
 db.sequelize
   .sync()
   .then(function () {
       console.log("connect");
-    // http.listen(PORT, () => {
-    //   console.log("listening on port: " + PORT);
-    // });
+    http.listen(PORT, () => {
+      console.log("listening on port: " + PORT);
+    });
   })
   .catch((err) => {
     console.log(err);
