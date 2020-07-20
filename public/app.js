@@ -48,19 +48,7 @@ const getAnswerCards = () => {
     drawAnswerCard(answerData);
   });
 };
-//do INSERT INTO player_answer_cards here?
 
-// //draw hand
-// const drawHand = () => {
-//   let playerHand = new Array();
-//   for (var i = 0; i < answerData.length; i++) {
-//     drawAnswerCard();
-//     playerHand.push(randomAnswer); 
-//   }
-// };
-
-///check if card has been drawn already, skip it and draw again.
-///check 'drawn answer cards' json or against player_answer_cards table
 
 // validation for name input, stores first user as host
 const roomInit = () => {
