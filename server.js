@@ -2,7 +2,7 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const app = express();
-const db = require('./models');
+const db = require("./models");
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
@@ -50,7 +50,6 @@ io.on("connection", function (socket) {
     io.sockets.emit("userList", users);
   });
 
-  
   socket.on("startGameClick", () => {
     io.sockets.emit("startGame", users);
   });
@@ -71,8 +70,13 @@ require("./controllers/questionCardsController.js")(app);
 require("./controllers/playersController.js")(app);
 require("./controllers/roundsController.js")(app);
 
-db.sequelize.sync().then(function() {
-  http.listen(PORT, () => {
-    console.log("listening on port: " + PORT);
+db.sequelize
+  .sync()
+  .then(function () {
+    http.listen(PORT, () => {
+      console.log("listening on port: " + PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
