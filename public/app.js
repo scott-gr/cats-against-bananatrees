@@ -9,12 +9,11 @@ const getAllQuestionCards = () => {
 }
 
 // get a random question card from db
-const getRandomCardById = () => {
+const getRandomCardById = (data) => {
 
-  // console.log(questionCards[Math.floor(Math.random() * questionCards.length)]
-  // ) 
-  // let randomQuestion = data[Math.floor(Math.random() * data.length)]
-  //   initializeRows();
+  let randomQuestion = data[Math.floor(Math.random() * data.length)];
+  sessionStorage.setItem('random shit', JSON.stringify(randomQuestion))
+  location.href = "/game";
 }
 
 const getQuestionCards = () => {
@@ -23,6 +22,7 @@ const getQuestionCards = () => {
     const questionCardLookup = {};
     data.forEach((card) => questionCardLookup[card.id] = card.text);
     sessionStorage.setItem("questionCards", JSON.stringify(questionCardLookup));
+    getRandomCardById(data);
   });
 };
 
@@ -162,7 +162,6 @@ const createPlayer = (roomId, playerName) => {
     if (isHost === "true") {
       createRound(roomId);
     } else {
-      location.href = "/game";
       getQuestionCards();
     }
   }).catch((err) => {
@@ -181,7 +180,6 @@ const getPlayers = (roomId) => {
     const playerId = sessionStorage.getItem("playerId");
     const currentRoundId = sessionStorage.getItem("roundId");
     updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
-    location.href = "/game";
     getQuestionCards();
   }).catch((err) => {
     console.log(err);
