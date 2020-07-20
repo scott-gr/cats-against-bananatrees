@@ -18,15 +18,9 @@ CREATE TABLE `rounds` (
 CREATE TABLE `players` (
   `id` INT NOT NULL PRIMARY KEY,
   `name` varchar(255),
-<<<<<<< HEAD
-  `socket_id` INT NOT NULL,
-  `poINT NOT NULLs` INT NOT NULL,
-  `room_id` INT NOT NULL
-=======
   `socket_id` varchar(255),
   `points` int,
   `room_id` int
->>>>>>> fe53436b5eab74ee1fe53a4793486205a6ef3e65
 );
 
 CREATE TABLE `answer_cards` (

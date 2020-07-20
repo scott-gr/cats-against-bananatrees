@@ -14,7 +14,7 @@ const getRandomCardById = (data) => {
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem('random shit', JSON.stringify(randomQuestion))
   location.href = "/game";
-}
+};
 
 const getQuestionCards = () => {
   $.get("/api/question_cards", (res) => {
@@ -25,6 +25,33 @@ const getQuestionCards = () => {
     getRandomCardById(data);
   });
 };
+
+// get all answer cards from db
+const getAllAnswerCards = () => {
+  $.get("/api/answer_cards", function(answerData) {
+    answerCards = answerData;
+  });
+};
+
+// draw 1 random answer card
+const drawAnswerCard = (answerData) => {
+  let randomAnswer = answerData[Math.floor(Math.random() * answerData.length)];
+  sessionStorage.setItem('drawn answer cards', JSON.stringify(randomAnswer))
+  location.href = "/game";
+};
+//do INSERT INTO player_answer_cards here?
+
+//draw hand
+const drawHand = () => {
+  let playerHand = new Array();
+  for (var i = 0; i < answerData.length; i++) {
+    drawAnswerCard();
+    playerHand.push(randomAnswer); 
+  }
+};
+
+///check if card has been drawn already, skip it and draw again.
+///check 'drawn answer cards' json or against player_answer_cards table
 
 // validation for name input, stores first user as host
 const roomInit = () => {
