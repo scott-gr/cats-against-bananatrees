@@ -23,12 +23,12 @@ CREATE TABLE `Players` (
   `room_id` int
 );
 
-CREATE TABLE `Answer_cards` (
+CREATE TABLE `AnswerCards` (
   `id` int,
   `text` varchar(255)
 );
 
-CREATE TABLE `Question_cards` (
+CREATE TABLE `QuestionCards` (
   `id` int,
   `text` varchar(255)
 );
@@ -48,17 +48,17 @@ CREATE TABLE `PlayersAnswerCards` (
 
 ALTER TABLE `players` ADD FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`);
 
-ALTER TABLE `rounds` ADD FOREIGN KEY (`room_id`) REFERENCES `Room` (`id`);
+ALTER TABLE `rounds` ADD FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`);
 
 ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `Rooms` (`current_round_id`);
 
 ALTER TABLE `players` ADD FOREIGN KEY (`id`) REFERENCES `rounds` (`judge_id`);
 
-ALTER TABLE `question_cards` ADD FOREIGN KEY (`id`) REFERENCES `rounds` (`question_card_id`);
+ALTER TABLE `QuestionCards` ADD FOREIGN KEY (`id`) REFERENCES `rounds` (`question_card_id`);
 
 ALTER TABLE `players` ADD FOREIGN KEY (`id`) REFERENCES `rounds` (`winner_id`);
 
-ALTER TABLE `answer_cards` ADD FOREIGN KEY (`id`) REFERENCES `roundAnswerCards` (`answer_card_id`);
+ALTER TABLE `AnswerCards` ADD FOREIGN KEY (`id`) REFERENCES `roundAnswerCards` (`answer_card_id`);
 
 ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `roundAnswerCards` (`round_id`);
 
@@ -66,4 +66,4 @@ ALTER TABLE `players` ADD FOREIGN KEY (`id`) REFERENCES `roundAnswerCards` (`pla
 
 ALTER TABLE `playersAnswerCards` ADD FOREIGN KEY (`player_id`) REFERENCES `players` (`id`);
 
-ALTER TABLE `answer_cards` ADD FOREIGN KEY (`id`) REFERENCES `playersAnswerCards` (`answer_card_id`);
+ALTER TABLE `AnswerCards` ADD FOREIGN KEY (`id`) REFERENCES `playersAnswerCards` (`answer_card_id`);

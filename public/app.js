@@ -10,7 +10,6 @@ const getAllQuestionCards = () => {
 
 // get a random question card from db
 const getRandomCardById = (data) => {
-
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem('random shit', JSON.stringify(randomQuestion))
   location.href = "/game";
@@ -39,19 +38,17 @@ const drawAnswerCard = (answerData) => {
   sessionStorage.setItem('drawn answer cards', JSON.stringify(randomAnswer))
   location.href = "/game";
 };
-//do INSERT INTO player_answer_cards here?
 
-//draw hand
-const drawHand = () => {
-  let playerHand = new Array();
-  for (var i = 0; i < answerData.length; i++) {
-    drawAnswerCard();
-    playerHand.push(randomAnswer); 
-  }
+const getAnswerCards = () => {
+  $.get("/api/answer_cards", (res) => {
+    const { answerData } = res;
+    const answerCardLookup = {};
+    answerData.forEach((card) => answerCardLookup[card.id] = card.text);
+    sessionStorage.setItem("questionCards", JSON.stringify(answerCardLookup));
+    drawAnswerCard(answerData);
+  });
 };
 
-///check if card has been drawn already, skip it and draw again.
-///check 'drawn answer cards' json or against player_answer_cards table
 
 // validation for name input, stores first user as host
 const roomInit = () => {
@@ -101,7 +98,7 @@ const generatePregameDisplay = () => {
   const user = sessionStorage.getItem("userName");
   const isHost = sessionStorage.getItem("isHost");
   if (!user) {
-    getNewUserName();
+    generatePlayerNameInput();
   } else {
     if (isHost === "true") {
       const welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
@@ -111,7 +108,7 @@ const generatePregameDisplay = () => {
       generateStartGameButton();
       $("#welcome").append(welcome);
       socket.emit("arrival");
-    } 
+    }
   }
 };
 
@@ -130,18 +127,60 @@ const generateStartGameButton = () => {
   </button>
   `);
   $("#startButtonContainer").append(startGameButton);
+  const playerNameValue = $("#startGameButton").text();
+  console.log(playerNameValue);
 };
 
-// gets player names via prompt
-// emits info to display arrival on all pages
-const getNewUserName = () => {
-  const newUser = prompt("Please enter your name");
+const generatePlayerNameInput = () => {
+  const newUserButtons = $(`
+  <input 
+    id="enterPlayerName" 
+    class="buttonBox" 
+    type="text" 
+    name="indexName" 
+    value="" 
+    onclick="whiteBackground()"
+    placeholder="Enter your clever name" />
+  <button 
+    id="newUserButton"   
+    class="buttonBox" 
+    type="button" 
+    name="button" 
+    onclick="createPlayerName()">
+    Click to begin.
+  </button>
+  `);
+  $("#guestName").append(newUserButtons);
+};
+
+$( "#enterPlayerName" ).keyup(function() {
+  createPlayerNamer();
+});
+
+const createPlayerName = () => {
+  const newUser = $("#enterPlayerName").val();
+  console.log("newuser", newUser);
+  broadcastNewPlayer(newUser);
+};
+
+const broadcastNewPlayer = (newUser) => {
   if (!newUser) {
-    getNewUserName();
+    generatePlayerNameInput();
   } else {
     socket.emit("setUsername", newUser);
   }
 };
+
+// gets player names via prompt
+// emits info to display arrival on all pages
+// const getNewUserName = () => {
+//   const newUser = prompt("Please enter your name");
+//   if (!newUser) {
+//     getNewUserName();
+//   } else {
+//     socket.emit("setUsername", newUser);
+//   }
+// };
 
 const createRound = (roomId) => {
   $.ajax({
@@ -190,6 +229,7 @@ const createPlayer = (roomId, playerName) => {
       createRound(roomId);
     } else {
       getQuestionCards();
+      getAnswerCards();
     }
   }).catch((err) => {
     console.log(err);
@@ -208,6 +248,7 @@ const getPlayers = (roomId) => {
     const currentRoundId = sessionStorage.getItem("roundId");
     updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
     getQuestionCards();
+    getAnswerCards();
   }).catch((err) => {
     console.log(err);
   });
@@ -233,15 +274,15 @@ socket.on("confirmRoomCreated", (id) => {
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
-  const now = new Date();
-  let hour = now.getHours();
-  if (hour > 12) {
-    hour -= 12;
-  } else if (hour === 0) {
-    hour = 12;
-  }
-  const minutes = now.getMinutes();
-  const chatEntry = $(`<li>${user} (${hour}:${minutes}): ${message}</li>`);
+  // const now = new Date();
+  // let hour = now.getHours();
+  // if (hour > 12) {
+  //   hour -= 12;
+  // } else if (hour === 0) {
+  //   hour = 12;
+  // }
+  // const minutes = now.getMinutes();
+  const chatEntry = $(`<li>${user}: ${message}</li>`);
   $("#chatEntries").prepend(chatEntry);
   $("#chatInput").val("");
 });
