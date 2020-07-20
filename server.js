@@ -53,9 +53,10 @@ console.log("*****5");
 //     io.sockets.emit("newmsg", data);
 //   });
 
-//   socket.on("arrival", () => {
-//     io.sockets.emit("userList", users);
-//   });
+  socket.on("arrival", () => {
+    io.sockets.emit("userList", users);
+  });
+  console.log("arrival");
 
 //   socket.on("startGameClick", () => {
 //     io.sockets.emit("startGame", users);
