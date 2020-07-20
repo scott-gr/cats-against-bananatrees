@@ -17,8 +17,7 @@
   },
   "production": 
   {
-    // "use_env_variable": "mysql://ommkrsahicfuy98o:wi44qacubsaigrd6@mkorvuw3sl6cu9ms.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/js2m0kdw6wlo95i8",
-    "use_env_variable": "JAWSDB_URL=mysql://nt3k21yb9cjbc41b:uc61q0vtukzsasi8@x40p5pp7n9rowyv6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/gb0t1xt9xdhhajul",
+    "use_env_variable": "JAWSDB_URL",
     "dialect": "mysql"
   }
 }
