@@ -171,17 +171,6 @@ const broadcastNewPlayer = (newUser) => {
   }
 };
 
-// gets player names via prompt
-// emits info to display arrival on all pages
-// const getNewUserName = () => {
-//   const newUser = prompt("Please enter your name");
-//   if (!newUser) {
-//     getNewUserName();
-//   } else {
-//     socket.emit("setUsername", newUser);
-//   }
-// };
-
 const createRound = (roomId) => {
   $.ajax({
     url: "/api/createround",
@@ -198,6 +187,17 @@ const createRound = (roomId) => {
     console.log(err);
   });
 };
+
+const getRounds = (roomId) => {
+  $.ajax({
+    url: "/api/getRounds/" + roomId,
+    method: "GET"
+  }).then((res) => {
+    const { data } = res;
+    const rounds = data.length;
+    sessionStorage.setItem("rounds", rounds)
+  })
+}
 
 const createNewRoom = () => {
   $.ajax({
@@ -274,14 +274,6 @@ socket.on("confirmRoomCreated", (id) => {
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
-  // const now = new Date();
-  // let hour = now.getHours();
-  // if (hour > 12) {
-  //   hour -= 12;
-  // } else if (hour === 0) {
-  //   hour = 12;
-  // }
-  // const minutes = now.getMinutes();
   const chatEntry = $(`<li>${user}: ${message}</li>`);
   $("#chatEntries").prepend(chatEntry);
   $("#chatInput").val("");
@@ -331,10 +323,6 @@ socket.on("newmsg", (data) => {
 });
 
 socket.on("startGame", () => {
-
-  // getAllQuestionCards();
-  // getRandomCardById(questionCards)
-
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
     createNewRoom();
