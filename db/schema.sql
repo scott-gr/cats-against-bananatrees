@@ -1,49 +1,49 @@
 CREATE TABLE `Rooms` (
-  `id` INT NOT NULL PRIMARY KEY,
-  `host_id` INT NOT NULL,
-  `player_count` INT NOT NULL,
-  `current_round_id` INT NOT NULL
+  `id` int PRIMARY KEY,
+  `host_id` int,
+  `player_count` int,
+  `current_round_id` int
 );
 
-CREATE TABLE `rounds` (
-  `id` INT NOT NULL PRIMARY KEY,
-  `game_round` INT NOT NULL,
-  `current_status` INT NOT NULL,
-  `judge_id` INT NOT NULL,
-  `question_card_id` INT NOT NULL,
-  `room_id` INT NOT NULL,
-  `winner_id` INT NOT NULL
+CREATE TABLE `Rounds` (
+  `id` int PRIMARY KEY,
+  `game_round` int,
+  `current_status` int,
+  `judge_id` int,
+  `question_card_id` int,
+  `room_id` int,
+  `winner_id` int
 );
 
-CREATE TABLE `players` (
-  `id` INT NOT NULL PRIMARY KEY,
+CREATE TABLE `Players` (
+  `id` int PRIMARY KEY,
   `name` varchar(255),
   `socket_id` varchar(255),
   `points` int,
   `room_id` int
 );
 
-CREATE TABLE `answer_cards` (
-  `id` INT NOT NULL,
+CREATE TABLE `Answer_cards` (
+  `id` int,
   `text` varchar(255)
 );
 
-CREATE TABLE `question_cards` (
-  `id` INT NOT NULL,
+CREATE TABLE `Question_cards` (
+  `id` int,
   `text` varchar(255)
 );
 
-CREATE TABLE `roundAnswerCards` (
-  `id` INT NOT NULL,
-  `answer_card_id` INT NOT NULL,
-  `player_id` INT NOT NULL,
-  `round_id` INT NOT NULL
+CREATE TABLE `RoundAnswerCards` (
+  `id` int,
+  `answer_card_id` int,
+  `player_id` int,
+  `round_id` int
 );
 
-CREATE TABLE `playersAnswerCards` (
-  `id` INT NOT NULL,
-  `player_id` INT NOT NULL,
-  `answer_card_id` INT NOT NULL
+CREATE TABLE `PlayersAnswerCards` (
+  `id` int,
+  `player_id` int,
+  `answer_card_id` int
 );
 
 ALTER TABLE `players` ADD FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`);
