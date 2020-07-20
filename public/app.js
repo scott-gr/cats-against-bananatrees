@@ -1,4 +1,4 @@
-let socket = io();
+let socket = io(window.location.hostname);
 
 // get all question cards from db
 const getAllQuestionCards = () => {

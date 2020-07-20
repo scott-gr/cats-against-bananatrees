@@ -25,52 +25,52 @@ app.use(apiRoutes);
 console.log("*****3");
 
 //Sets up username in array
-// users = [];
+users = [];
 
-// io.on("connection", (socket) => {
-//   console.log("*****4");
+io.on("connection", (socket) => {
+  console.log("*****4");
 
-//   socket.on("setUsername", (data) => {
-//     console.log("Username: ", data, "Socket ID: ", socket.id);
+  socket.on("setUsername", (data) => {
+    console.log("Username: ", data, "Socket ID: ", socket.id);
 
-//     //checks new username against existing array
-//     if (users.indexOf(data) > -1) {
-//       socket.emit(
-//         "userExists",
-//         `Another "${data}" is already registered.\nThere can be only one.`
-//       );
-//     } else {
-//       users.push(data);
-//       socket.emit("userSet", { username: data });
-//     }
-//   });
-// console.log("*****5");
+    //checks new username against existing array
+    if (users.indexOf(data) > -1) {
+      socket.emit(
+        "userExists",
+        `Another "${data}" is already registered.\nThere can be only one.`
+      );
+    } else {
+      users.push(data);
+      socket.emit("userSet", { username: data });
+    }
+  });
+console.log("*****5");
 
-//   //listening for message
-//   socket.on("msg", (data) => {
-//     console.log("data received:", data);
-//     //Send message to everyone
-//     io.sockets.emit("newmsg", data);
-//   });
+  //listening for message
+  socket.on("msg", (data) => {
+    console.log("data received:", data);
+    //Send message to everyone
+    io.sockets.emit("newmsg", data);
+  });
 
-//   socket.on("arrival", () => {
-//     io.sockets.emit("userList", users);
-//   });
+  socket.on("arrival", () => {
+    io.sockets.emit("userList", users);
+  });
 
-//   socket.on("startGameClick", () => {
-//     io.sockets.emit("startGame", users);
-//   });
+  socket.on("startGameClick", () => {
+    io.sockets.emit("startGame", users);
+  });
 
-//   socket.on("roomCreated", (id) => {
-//     io.sockets.emit("confirmRoomCreated", id);
-//   });
+  socket.on("roomCreated", (id) => {
+    io.sockets.emit("confirmRoomCreated", id);
+  });
 
   // LEAVING THIS TO ADD IN FUNCTIONALITY LATER
   // socket.on("playerLeft", (playerLeaving) => {
   //   users = users.filter((userName) => userName !== playerLeaving);
   //   io.sockets.emit("userList", users);
   // });
-// });
+});
 console.log("*****6");
 
 require("./controllers/roomsController.js")(app);
