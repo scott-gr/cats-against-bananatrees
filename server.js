@@ -1,11 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+const exphbs = require("express-handlebars");
+const path = require("path");
+
 const db = require("./models");
 const PORT = process.env.PORT || 3000;
-const db = require("./models");
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -21,24 +22,27 @@ app.use(viewRoutes);
 const apiRoutes = require("./controllers/apiController.js");
 app.use(apiRoutes);
 
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
 // //Sets up username in array
 // users = [];
 
 io.on("connection", (socket) => {
   console.log(socket.id);
-  //   socket.on("setUsername", function (data) {
-  //     console.log("Username: ", data, "Socket ID: ", socket.id);
-  //     //checks new username against existing array
-  //     if (users.indexOf(data) > -1) {
-  //       socket.emit(
-  //         "userExists",
-  //         `Another "${data}" is already registered.\nThere can be only one.`
-  //       );
-  //     } else {
-  //       users.push(data);
-  //       socket.emit("userSet", { username: data });
-  //     }
-  //   });
+    socket.on("setUsername", function (data) {
+      console.log("Username: ", data, "Socket ID: ", socket.id);
+      //checks new username against existing array
+      if (users.indexOf(data) > -1) {
+        socket.emit(
+          "userExists",
+          `Another "${data}" is already registered.\nThere can be only one.`
+        );
+      } else {
+        users.push(data);
+        socket.emit("userSet", { username: data });
+      }
+    });
   //listening for message
   //   socket.on("msg", (data) => {
   //     console.log("data received:", data);
