@@ -1,11 +1,9 @@
 const db = require("../models");
 module.exports = function (router) {
-  // GET request not currently needed, TBD
   router.get("/api/getroom/:roomid", (req, res) => {
-    const roomId = parseInt(req.params.roomid);
     db.Rooms.findOne({
       where: {
-        id: roomId,
+        id: req.params.roomid,
       },
     })
       .then((result) => {
