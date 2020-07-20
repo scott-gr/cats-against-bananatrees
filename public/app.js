@@ -10,7 +10,6 @@ const getAllQuestionCards = () => {
 
 // get a random question card from db
 const getRandomCardById = (data) => {
-
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem('random shit', JSON.stringify(randomQuestion))
   location.href = "/game";
@@ -111,7 +110,7 @@ const generatePregameDisplay = () => {
   const user = sessionStorage.getItem("userName");
   const isHost = sessionStorage.getItem("isHost");
   if (!user) {
-    getNewUserName();
+    generatePlayerNameInput();
   } else {
     if (isHost === "true") {
       const welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
@@ -121,7 +120,7 @@ const generatePregameDisplay = () => {
       generateStartGameButton();
       $("#welcome").append(welcome);
       socket.emit("arrival");
-    } 
+    }
   }
 };
 
@@ -140,18 +139,60 @@ const generateStartGameButton = () => {
   </button>
   `);
   $("#startButtonContainer").append(startGameButton);
+  const playerNameValue = $("#startGameButton").text();
+  console.log(playerNameValue);
 };
 
-// gets player names via prompt
-// emits info to display arrival on all pages
-const getNewUserName = () => {
-  const newUser = prompt("Please enter your name");
+const generatePlayerNameInput = () => {
+  const newUserButtons = $(`
+  <input 
+    id="enterPlayerName" 
+    class="buttonBox" 
+    type="text" 
+    name="indexName" 
+    value="" 
+    onclick="whiteBackground()"
+    placeholder="Enter your clever name" />
+  <button 
+    id="newUserButton"   
+    class="buttonBox" 
+    type="button" 
+    name="button" 
+    onclick="createPlayerName()">
+    Click to begin.
+  </button>
+  `);
+  $("#guestName").append(newUserButtons);
+};
+
+$( "#enterPlayerName" ).keyup(function() {
+  createPlayerNamer();
+});
+
+const createPlayerName = () => {
+  const newUser = $("#enterPlayerName").val();
+  console.log("newuser", newUser);
+  broadcastNewPlayer(newUser);
+};
+
+const broadcastNewPlayer = (newUser) => {
   if (!newUser) {
-    getNewUserName();
+    generatePlayerNameInput();
   } else {
     socket.emit("setUsername", newUser);
   }
 };
+
+// gets player names via prompt
+// emits info to display arrival on all pages
+// const getNewUserName = () => {
+//   const newUser = prompt("Please enter your name");
+//   if (!newUser) {
+//     getNewUserName();
+//   } else {
+//     socket.emit("setUsername", newUser);
+//   }
+// };
 
 const createRound = (roomId) => {
   $.ajax({
@@ -245,15 +286,15 @@ socket.on("confirmRoomCreated", (id) => {
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
-  const now = new Date();
-  let hour = now.getHours();
-  if (hour > 12) {
-    hour -= 12;
-  } else if (hour === 0) {
-    hour = 12;
-  }
-  const minutes = now.getMinutes();
-  const chatEntry = $(`<li>${user} (${hour}:${minutes}): ${message}</li>`);
+  // const now = new Date();
+  // let hour = now.getHours();
+  // if (hour > 12) {
+  //   hour -= 12;
+  // } else if (hour === 0) {
+  //   hour = 12;
+  // }
+  // const minutes = now.getMinutes();
+  const chatEntry = $(`<li>${user}: ${message}</li>`);
   $("#chatEntries").prepend(chatEntry);
   $("#chatInput").val("");
 });
