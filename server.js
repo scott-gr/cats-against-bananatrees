@@ -25,10 +25,10 @@ app.use(apiRoutes);
 console.log("*****3");
 
 //Sets up username in array
-// users = [];
+users = [];
 
-// io.on("connection", (socket) => {
-//   console.log("*****4");
+io.on("connection", (socket) => {
+  console.log("*****4");
 
 //   socket.on("setUsername", (data) => {
 //     console.log("Username: ", data, "Socket ID: ", socket.id);
@@ -70,8 +70,8 @@ console.log("*****3");
 //   //   users = users.filter((userName) => userName !== playerLeaving);
 //   //   io.sockets.emit("userList", users);
 //   // });
-// });
-// console.log("*****6");
+});
+console.log("*****6");
 
 require("./controllers/roomsController.js")(app);
 require("./controllers/questionCardsController.js")(app);
