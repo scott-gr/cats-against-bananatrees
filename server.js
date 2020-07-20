@@ -70,7 +70,7 @@ console.log("*****3");
   //   users = users.filter((userName) => userName !== playerLeaving);
   //   io.sockets.emit("userList", users);
   // });
-});
+// });
 console.log("*****6");
 
 require("./controllers/roomsController.js")(app);
