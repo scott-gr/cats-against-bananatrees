@@ -1,5 +1,4 @@
-let socket = io();
-
+// let socket = io();
 
 // get all question cards from db
 const getAllQuestionCards = () => {
@@ -128,7 +127,6 @@ const generateStartGameButton = () => {
   `);
   $("#startButtonContainer").append(startGameButton);
   const playerNameValue = $("#startGameButton").text();
-  console.log(playerNameValue);
 };
 
 const generatePlayerNameInput = () => {
@@ -159,7 +157,6 @@ $( "#enterPlayerName" ).keyup(function() {
 
 const createPlayerName = () => {
   const newUser = $("#enterPlayerName").val();
-  console.log("newuser", newUser);
   broadcastNewPlayer(newUser);
 };
 
@@ -274,6 +271,7 @@ socket.on("confirmRoomCreated", (id) => {
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
+
   // const now = new Date();
   // let hour = now.getHours();
   // if (hour > 12) {
@@ -332,8 +330,8 @@ socket.on("newmsg", (data) => {
 
 socket.on("startGame", () => {
 
-  // getAllQuestionCards();
-  // getRandomCardById(questionCards)
+  getAllQuestionCards();
+  getRandomCardById(questionCards)
 
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
