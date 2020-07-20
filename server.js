@@ -54,14 +54,15 @@ io.on("connection", function (socket) {
     io.sockets.emit("startGame", users);
   });
 
-  socket.on("playerLeft", (playerLeaving) => {
-    users = users.filter((userName) => userName !== playerLeaving);
-    io.sockets.emit("userList", users);
-  });
+  // LEAVING THIS TO ADD IN FUNCTIONALITY LATER
+  // socket.on("playerLeft", (playerLeaving) => {
+  //   users = users.filter((userName) => userName !== playerLeaving);
+  //   io.sockets.emit("userList", users);
+  // });
 
   socket.on("roomCreated", (id) => {
     io.sockets.emit("confirmRoomCreated", id);
-  })
+  });
 });
 
 require("./controllers/roomsController.js")(app);
@@ -74,5 +75,3 @@ db.sequelize.sync().then(function() {
     console.log("listening on port: " + PORT);
   });
 });
-
-

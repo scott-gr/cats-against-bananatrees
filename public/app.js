@@ -11,17 +11,20 @@ const getAllQuestionCards = () => {
 // get a random question card from db
 const getRandomCardById = () => {
 
-  $.get("/api/question_cards", function(data) {
-    questionCards = data;
-
-    let randomQuestion = data[Math.floor(Math.random() * data.length)]
+  // console.log(questionCards[Math.floor(Math.random() * questionCards.length)]
+  // ) 
+  // let randomQuestion = data[Math.floor(Math.random() * data.length)]
   //   initializeRows();
-
-  });
-  console.log(questionCards[Math.floor(Math.random() * questionCards.length)]
-  )
-    
 }
+
+const getQuestionCards = () => {
+  $.get("/api/question_cards", (res) => {
+    const { data } = res;
+    const questionCardLookup = {};
+    data.forEach((card) => questionCardLookup[card.id] = card.text);
+    sessionStorage.setItem("questionCards", JSON.stringify(questionCardLookup));
+  });
+};
 
 // validation for name input, stores first user as host
 const roomInit = () => {
@@ -160,6 +163,7 @@ const createPlayer = (roomId, playerName) => {
       createRound(roomId);
     } else {
       location.href = "/game";
+      getQuestionCards();
     }
   }).catch((err) => {
     console.log(err);
@@ -178,6 +182,7 @@ const getPlayers = (roomId) => {
     const currentRoundId = sessionStorage.getItem("roundId");
     updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
     location.href = "/game";
+    getQuestionCards();
   }).catch((err) => {
     console.log(err);
   });
@@ -261,8 +266,8 @@ socket.on("newmsg", (data) => {
 
 socket.on("startGame", () => {
 
-  getAllQuestionCards();
-  getRandomCardById(questionCards)
+  // getAllQuestionCards();
+  // getRandomCardById(questionCards)
 
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
@@ -271,6 +276,7 @@ socket.on("startGame", () => {
 
 });
 
+// LEAVING THIS TO ADD FUNCTIONALITY LATER
 // $(window).on("beforeunload", () => {
 //   const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
 //   if (isCurrentPagePregame === true) {
