@@ -2,7 +2,7 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const app = express();
-const http = require("http").Server(app);
+const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const db = require('./models');
 const PORT = process.env.PORT || 3000;
@@ -24,8 +24,8 @@ app.use(apiRoutes);
 //Sets up username in array
 users = [];
 
-io.on("connection", function (socket) {
-  socket.on("setUsername", function (data) {
+io.on("connection", (socket) => {
+  socket.on("setUsername", (data) => {
     console.log("Username: ", data, "Socket ID: ", socket.id);
     //checks new username against existing array
     if (users.indexOf(data) > -1) {
@@ -38,6 +38,7 @@ io.on("connection", function (socket) {
       socket.emit("userSet", { username: data });
     }
   });
+
   //listening for message
   socket.on("msg", (data) => {
     console.log("data received:", data);
@@ -49,9 +50,12 @@ io.on("connection", function (socket) {
     io.sockets.emit("userList", users);
   });
 
-  
   socket.on("startGameClick", () => {
     io.sockets.emit("startGame", users);
+  });
+
+  socket.on("roomCreated", (id) => {
+    io.sockets.emit("confirmRoomCreated", id);
   });
 
   // LEAVING THIS TO ADD IN FUNCTIONALITY LATER
@@ -59,10 +63,6 @@ io.on("connection", function (socket) {
   //   users = users.filter((userName) => userName !== playerLeaving);
   //   io.sockets.emit("userList", users);
   // });
-
-  socket.on("roomCreated", (id) => {
-    io.sockets.emit("confirmRoomCreated", id);
-  });
 });
 
 require("./controllers/roomsController.js")(app);
@@ -71,8 +71,15 @@ require("./controllers/answerCardsController.js")(app);
 require("./controllers/playersController.js")(app);
 require("./controllers/roundsController.js")(app);
 
-db.sequelize.sync().then(function() {
-  http.listen(PORT, () => {
-    console.log("listening on port: " + PORT);
+db.sequelize
+  .sync()
+  .then(function () {
+    console.log("connect");
+    http.listen(PORT, () => {
+      console.log("listening on port: " + PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
+
