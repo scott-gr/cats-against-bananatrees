@@ -39,16 +39,26 @@ const drawAnswerCard = (answerData) => {
   sessionStorage.setItem('drawn answer cards', JSON.stringify(randomAnswer))
   location.href = "/game";
 };
+
+const getAnswerCards = () => {
+  $.get("/api/answer_cards", (res) => {
+    const { answerData } = res;
+    const answerCardLookup = {};
+    answerData.forEach((card) => answerCardLookup[card.id] = card.text);
+    sessionStorage.setItem("questionCards", JSON.stringify(answerCardLookup));
+    drawAnswerCard(answerData);
+  });
+};
 //do INSERT INTO player_answer_cards here?
 
-//draw hand
-const drawHand = () => {
-  let playerHand = new Array();
-  for (var i = 0; i < answerData.length; i++) {
-    drawAnswerCard();
-    playerHand.push(randomAnswer); 
-  }
-};
+// //draw hand
+// const drawHand = () => {
+//   let playerHand = new Array();
+//   for (var i = 0; i < answerData.length; i++) {
+//     drawAnswerCard();
+//     playerHand.push(randomAnswer); 
+//   }
+// };
 
 ///check if card has been drawn already, skip it and draw again.
 ///check 'drawn answer cards' json or against player_answer_cards table
@@ -190,6 +200,7 @@ const createPlayer = (roomId, playerName) => {
       createRound(roomId);
     } else {
       getQuestionCards();
+      getAnswerCards();
     }
   }).catch((err) => {
     console.log(err);
@@ -208,6 +219,7 @@ const getPlayers = (roomId) => {
     const currentRoundId = sessionStorage.getItem("roundId");
     updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
     getQuestionCards();
+    getAnswerCards();
   }).catch((err) => {
     console.log(err);
   });

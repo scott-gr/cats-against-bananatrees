@@ -23,12 +23,12 @@ CREATE TABLE `Players` (
   `room_id` int
 );
 
-CREATE TABLE `Answer_cards` (
+CREATE TABLE `AnswerCards` (
   `id` int,
   `text` varchar(255)
 );
 
-CREATE TABLE `Question_cards` (
+CREATE TABLE `QuestionCards` (
   `id` int,
   `text` varchar(255)
 );
