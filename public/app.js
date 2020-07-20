@@ -1,6 +1,5 @@
 let socket = io();
 
-
 // get all question cards from db
 const getAllQuestionCards = () => {
   $.get("/api/question_cards", function(data) {
