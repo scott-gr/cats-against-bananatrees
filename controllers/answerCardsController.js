@@ -1,12 +1,12 @@
 const db = require('../models');
 module.exports = function (router) {
-  router.get('/api/question_cards', (req, res) => {
-    db.QuestionCards.findAll()
+  router.get('/api/answer_cards', (req, res) => {
+    db.AnswerCards.findAll()
       .then((result) => {
         res.json({
           error: false,
           data: result,
-          message: 'Successfully retrieved question cards',
+          message: 'Successfully retrieved answer cards',
         });
       })
       .catch((err) => {
@@ -14,7 +14,7 @@ module.exports = function (router) {
         res.status(500).json({
           error: true,
           data: null,
-          message: 'Unable to retrieve cards.',
+          message: 'Unable to retrieve answer cards.',
         });
       });
   });
