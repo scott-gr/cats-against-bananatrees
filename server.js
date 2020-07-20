@@ -25,6 +25,7 @@ app.use(apiRoutes);
 //Sets up username in array
 users = [];
 
+/*
 io.on("connection", function (socket) {
   socket.on("setUsername", function (data) {
     console.log("Username: ", data, "Socket ID: ", socket.id);
@@ -64,6 +65,7 @@ io.on("connection", function (socket) {
     io.sockets.emit("confirmRoomCreated", id);
   });
 });
+*/
 
 require("./controllers/roomsController.js")(app);
 require("./controllers/questionCardsController.js")(app);
