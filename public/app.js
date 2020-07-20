@@ -127,7 +127,6 @@ const generateStartGameButton = () => {
   `);
   $("#startButtonContainer").append(startGameButton);
   const playerNameValue = $("#startGameButton").text();
-  console.log(playerNameValue);
 };
 
 const generatePlayerNameInput = () => {
@@ -158,7 +157,6 @@ $( "#enterPlayerName" ).keyup(function() {
 
 const createPlayerName = () => {
   const newUser = $("#enterPlayerName").val();
-  console.log("newuser", newUser);
   broadcastNewPlayer(newUser);
 };
 

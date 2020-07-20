@@ -32,7 +32,6 @@ module.exports = function (router) {
       room_id: req.body.room_id
     })
       .then((result) => {
-        console.log("Player post call:", result);
         res.json({
           error: false,
           data: result,

@@ -10,12 +10,7 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  console.log("*******************env", env);
-  console.log("*******************configenv", config.use_env_variable);
-
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
-  console.log("*******************env2", env);
-  console.log("*******************configenv2", config.use_env_variable);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
