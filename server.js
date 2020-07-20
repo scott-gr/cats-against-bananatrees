@@ -46,25 +46,25 @@ io.on("connection", (socket) => {
   });
 console.log("*****5");
 
-//   //listening for message
-//   socket.on("msg", (data) => {
-//     console.log("data received:", data);
-//     //Send message to everyone
-//     io.sockets.emit("newmsg", data);
-//   });
+  //listening for message
+  socket.on("msg", (data) => {
+    console.log("data received:", data);
+    //Send message to everyone
+    io.sockets.emit("newmsg", data);
+  });
 
   socket.on("arrival", () => {
     io.sockets.emit("userList", users);
   });
   console.log("arrival");
 
-//   socket.on("startGameClick", () => {
-//     io.sockets.emit("startGame", users);
-//   });
+  socket.on("startGameClick", () => {
+    io.sockets.emit("startGame", users);
+  });
 
-//   socket.on("roomCreated", (id) => {
-//     io.sockets.emit("confirmRoomCreated", id);
-//   });
+  socket.on("roomCreated", (id) => {
+    io.sockets.emit("confirmRoomCreated", id);
+  });
 
 //   // LEAVING THIS TO ADD IN FUNCTIONALITY LATER
 //   // socket.on("playerLeft", (playerLeaving) => {
