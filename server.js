@@ -4,13 +4,13 @@ const path = require("path");
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
-const db = require("./models");
+const db = require('./models');
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Set Handlebars.
 
+// Set Handlebars.
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use(express.static(path.join("public")));
@@ -23,6 +23,7 @@ app.use(apiRoutes);
 
 //Sets up username in array
 users = [];
+
 io.on("connection", function (socket) {
   socket.on("setUsername", function (data) {
     console.log("Username: ", data, "Socket ID: ", socket.id);
@@ -48,23 +49,29 @@ io.on("connection", function (socket) {
     io.sockets.emit("userList", users);
   });
 
+  
   socket.on("startGameClick", () => {
     io.sockets.emit("startGame", users);
   });
 
-  socket.on("playerLeft", (playerLeaving) => {
-    users = users.filter((userName) => userName !== playerLeaving);
-    io.sockets.emit("userList", users);
-  });
+  // LEAVING THIS TO ADD IN FUNCTIONALITY LATER
+  // socket.on("playerLeft", (playerLeaving) => {
+  //   users = users.filter((userName) => userName !== playerLeaving);
+  //   io.sockets.emit("userList", users);
+  // });
 
+  socket.on("roomCreated", (id) => {
+    io.sockets.emit("confirmRoomCreated", id);
+  });
 });
 
 require("./controllers/roomsController.js")(app);
+require("./controllers/questionCardsController.js")(app);
+require("./controllers/playersController.js")(app);
+require("./controllers/roundsController.js")(app);
 
 db.sequelize.sync().then(function() {
   http.listen(PORT, () => {
     console.log("listening on port: " + PORT);
   });
 });
-
-

@@ -18,9 +18,15 @@ CREATE TABLE `rounds` (
 CREATE TABLE `players` (
   `id` INT NOT NULL PRIMARY KEY,
   `name` varchar(255),
+<<<<<<< HEAD
   `socket_id` INT NOT NULL,
   `poINT NOT NULLs` INT NOT NULL,
   `room_id` INT NOT NULL
+=======
+  `socket_id` varchar(255),
+  `points` int,
+  `room_id` int
+>>>>>>> fe53436b5eab74ee1fe53a4793486205a6ef3e65
 );
 
 CREATE TABLE `answer_cards` (
@@ -46,11 +52,11 @@ CREATE TABLE `playersAnswerCards` (
   `answer_card_id` INT NOT NULL
 );
 
-ALTER TABLE `players` ADD FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+ALTER TABLE `players` ADD FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`);
 
-ALTER TABLE `rounds` ADD FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+ALTER TABLE `rounds` ADD FOREIGN KEY (`room_id`) REFERENCES `Room` (`id`);
 
-ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `rooms` (`current_round_id`);
+ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `Rooms` (`current_round_id`);
 
 ALTER TABLE `players` ADD FOREIGN KEY (`id`) REFERENCES `rounds` (`judge_id`);
 

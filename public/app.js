@@ -1,5 +1,32 @@
 let socket = io();
 
+
+// get all question cards from db
+const getAllQuestionCards = () => {
+  $.get("/api/question_cards", function(data) {
+    questionCards = data;
+  });
+}
+
+// get a random question card from db
+const getRandomCardById = (data) => {
+
+  let randomQuestion = data[Math.floor(Math.random() * data.length)];
+  sessionStorage.setItem('random shit', JSON.stringify(randomQuestion))
+  location.href = "/game";
+}
+
+const getQuestionCards = () => {
+  $.get("/api/question_cards", (res) => {
+    const { data } = res;
+    const questionCardLookup = {};
+    data.forEach((card) => questionCardLookup[card.id] = card.text);
+    sessionStorage.setItem("questionCards", JSON.stringify(questionCardLookup));
+    getRandomCardById(data);
+  });
+};
+
+// validation for name input, stores first user as host
 const roomInit = () => {
   const nameInput = $("#indexName").val();
   if (nameInput !== "") {
@@ -10,14 +37,17 @@ const roomInit = () => {
   }
 };
 
+// retrieving user name from session storage
 const getUserName = () => {
   return sessionStorage.getItem("userName");
 };
 
+// sets name input field to white when clicked
 const whiteBackground = () => {
   $("#indexName").css("background-color", "white");
 };
 
+// chat function
 const submitChat = () => {
   const chatInput = $("#chatInput").val();
   if (chatInput !== "") {
@@ -29,6 +59,7 @@ const submitChat = () => {
   }
 };
 
+// chat enter handler
 const inputKeyUp = (e) => {
   e.which = e.which || e.keyCode;
   if (e.which == 13) {
@@ -36,6 +67,9 @@ const inputKeyUp = (e) => {
   }
 };
 
+// gets user name and host status from session storage
+// forces other players to enter name in prompt
+// generates host message
 const generatePregameDisplay = () => {
   const user = sessionStorage.getItem("userName");
   const isHost = sessionStorage.getItem("isHost");
@@ -54,6 +88,8 @@ const generatePregameDisplay = () => {
   }
 };
 
+// dynamically creates start button
+// enables it when other players arrive
 const generateStartGameButton = () => {
   const startGameButton = $(`
   <button 
@@ -69,6 +105,8 @@ const generateStartGameButton = () => {
   $("#startButtonContainer").append(startGameButton);
 };
 
+// gets player names via prompt
+// emits info to display arrival on all pages
 const getNewUserName = () => {
   const newUser = prompt("Please enter your name");
   if (!newUser) {
@@ -77,6 +115,94 @@ const getNewUserName = () => {
     socket.emit("setUsername", newUser);
   }
 };
+
+const createRound = (roomId) => {
+  $.ajax({
+    url: "/api/createround",
+    data: {
+      "room_id": roomId,
+      "game_round": 1
+    },
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    sessionStorage.setItem("roundId", id);
+    getPlayers(roomId);
+  }).catch((err) => {
+    console.log(err);
+  });
+};
+
+const createNewRoom = () => {
+  $.ajax({
+    url: "/api/createnewroom",
+    data: {},
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    socket.emit("roomCreated", id);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const createPlayer = (roomId, playerName) => {
+  $.ajax({
+    url: "/api/createplayer",
+    data: {
+      "room_id": roomId,
+      "socket_id": "",
+      "name": playerName
+    },
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    sessionStorage.setItem("playerId", id);
+    const isHost = sessionStorage.getItem("isHost");
+    if (isHost === "true") {
+      createRound(roomId);
+    } else {
+      getQuestionCards();
+    }
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const getPlayers = (roomId) => {
+  $.ajax({
+    url: "/api/getroomplayers/" + roomId,
+    method: "GET"
+  }).then((res) => {
+    const { data } = res;
+    const playerCount = data.length;
+    sessionStorage.setItem("playerCount", playerCount);
+    const playerId = sessionStorage.getItem("playerId");
+    const currentRoundId = sessionStorage.getItem("roundId");
+    updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
+    getQuestionCards();
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const updateRoom = (roomId, playerCount, playerId, currentRoundId) => {
+  $.ajax({
+    url: "/api/updateroom",
+    method: "PUT",
+    data: {roomId, playerCount, playerId, currentRoundId}
+  }).then((res) => {
+    console.log(res);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+socket.on("confirmRoomCreated", (id) => {
+  sessionStorage.setItem("roomId", id);
+  const playerName = sessionStorage.getItem("userName");
+  createPlayer(id, playerName);
+})
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
@@ -129,7 +255,6 @@ socket.on("userList", (data) => {
 });
 
 socket.on("newmsg", (data) => {
-  console.log("message", data);
   if (user) {
     $("#message-container").html(
       "<div><b>" + data.user + "</b>: " + data.message + "</div>"
@@ -138,13 +263,22 @@ socket.on("newmsg", (data) => {
 });
 
 socket.on("startGame", () => {
-  location.href = "/game";
+
+  // getAllQuestionCards();
+  // getRandomCardById(questionCards)
+
+  const isHost = sessionStorage.getItem("isHost");
+  if (isHost === "true") {
+    createNewRoom();
+  }
+
 });
 
-$(window).on("beforeunload", () => {
-  const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
-  if (isCurrentPagePregame === true) {
-    const playerLeaving = sessionStorage.getItem("userName");
-    socket.emit("playerLeft", playerLeaving);
-  }
-});
+// LEAVING THIS TO ADD FUNCTIONALITY LATER
+// $(window).on("beforeunload", () => {
+//   const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
+//   if (isCurrentPagePregame === true) {
+//     const playerLeaving = sessionStorage.getItem("userName");
+//     socket.emit("playerLeft", playerLeaving);
+//   }
+// });
