@@ -13,6 +13,10 @@ const getRandomCardById = () => {
 
   $.get("/api/question_cards", function(data) {
     questionCards = data;
+
+    let randomQuestion = data[Math.floor(Math.random() * data.length)]
+  //   initializeRows();
+
   });
   console.log(questionCards[Math.floor(Math.random() * questionCards.length)]
   )
@@ -109,21 +113,22 @@ const getNewUserName = () => {
   }
 };
 
-// GET call to get the new room id
-// const getNewRoomId = () => {
-//   $.ajax({
-//     url: "/api/getallrooms",
-//     method: "GET"
-//   }).then((res) => {
-//     const { data } = res;
-//     const idArr = data.map((idObj) => idObj.id);
-//     const highestId = Math.max(...idArr);
-//     const newRoomId = highestId + 1;
-//     createNewRoom(newRoomId);
-//   }).catch((err) => {
-//     console.log(err);
-//   });
-// }
+const createRound = (roomId) => {
+  $.ajax({
+    url: "/api/createround",
+    data: {
+      "room_id": roomId,
+      "game_round": 1
+    },
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    sessionStorage.setItem("roundId", id);
+    getPlayers(roomId);
+  }).catch((err) => {
+    console.log(err);
+  });
+};
 
 const createNewRoom = () => {
   $.ajax({
@@ -138,8 +143,62 @@ const createNewRoom = () => {
   });
 }
 
+const createPlayer = (roomId, playerName) => {
+  $.ajax({
+    url: "/api/createplayer",
+    data: {
+      "room_id": roomId,
+      "socket_id": "",
+      "name": playerName
+    },
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    sessionStorage.setItem("playerId", id);
+    const isHost = sessionStorage.getItem("isHost");
+    if (isHost === "true") {
+      createRound(roomId);
+    } else {
+      location.href = "/game";
+    }
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const getPlayers = (roomId) => {
+  $.ajax({
+    url: "/api/getroomplayers/" + roomId,
+    method: "GET"
+  }).then((res) => {
+    const { data } = res;
+    const playerCount = data.length;
+    sessionStorage.setItem("playerCount", playerCount);
+    const playerId = sessionStorage.getItem("playerId");
+    const currentRoundId = sessionStorage.getItem("roundId");
+    updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
+    location.href = "/game";
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const updateRoom = (roomId, playerCount, playerId, currentRoundId) => {
+  $.ajax({
+    url: "/api/updateroom",
+    method: "PUT",
+    data: {roomId, playerCount, playerId, currentRoundId}
+  }).then((res) => {
+    console.log(res);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
 socket.on("confirmRoomCreated", (id) => {
   sessionStorage.setItem("roomId", id);
+  const playerName = sessionStorage.getItem("userName");
+  createPlayer(id, playerName);
 })
 
 socket.on("newmsg", (data) => {
@@ -201,7 +260,6 @@ socket.on("newmsg", (data) => {
 });
 
 socket.on("startGame", () => {
-  location.href = "/game";
 
   getAllQuestionCards();
   getRandomCardById(questionCards)
@@ -213,10 +271,10 @@ socket.on("startGame", () => {
 
 });
 
-$(window).on("beforeunload", () => {
-  const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
-  if (isCurrentPagePregame === true) {
-    const playerLeaving = sessionStorage.getItem("userName");
-    socket.emit("playerLeft", playerLeaving);
-  }
-});
+// $(window).on("beforeunload", () => {
+//   const isCurrentPagePregame = location.href.indexOf("/pregame") > -1;
+//   if (isCurrentPagePregame === true) {
+//     const playerLeaving = sessionStorage.getItem("userName");
+//     socket.emit("playerLeft", playerLeaving);
+//   }
+// });
