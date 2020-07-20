@@ -16,6 +16,7 @@ const getRandomCardById = (data) => {
   location.href = "/game";
 };
 
+// get question cards from the data base and save as key value pairs in session storage
 const getQuestionCards = () => {
   $.get("/api/question_cards", (res) => {
     const { data } = res;
@@ -233,15 +234,15 @@ socket.on("confirmRoomCreated", (id) => {
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
-  const now = new Date();
-  let hour = now.getHours();
-  if (hour > 12) {
-    hour -= 12;
-  } else if (hour === 0) {
-    hour = 12;
-  }
-  const minutes = now.getMinutes();
-  const chatEntry = $(`<li>${user} (${hour}:${minutes}): ${message}</li>`);
+  // const now = new Date();
+  // let hour = now.getHours();
+  // if (hour > 12) {
+  //   hour -= 12;
+  // } else if (hour === 0) {
+  //   hour = 12;
+  // }
+  // const minutes = now.getMinutes();
+  const chatEntry = $(`<li>${user}: ${message}</li>`);
   $("#chatEntries").prepend(chatEntry);
   $("#chatInput").val("");
 });
