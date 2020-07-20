@@ -1,29 +1,8 @@
 const express = require("express");
-const exphbs = require("express-handlebars");
-const path = require("path");
 const app = express();
-const db = require("./models");
 const PORT = process.env.PORT || 3000;
+const db = require("./models");
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-// Set Handlebars.
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-app.use(express.static(path.join("public")));
-
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
-
-const viewRoutes = require("./controllers/viewsController.js");
-app.use(viewRoutes);
-
-const apiRoutes = require("./controllers/apiController.js");
-app.use(apiRoutes);
-
-//Sets up username in array
-users = [];
 
 /*
 io.on("connection", function (socket) {
@@ -67,17 +46,11 @@ io.on("connection", function (socket) {
 });
 */
 
-require("./controllers/roomsController.js")(app);
-require("./controllers/questionCardsController.js")(app);
-require("./controllers/playersController.js")(app);
-require("./controllers/roundsController.js")(app);
 
 db.sequelize
   .sync()
   .then(function () {
-    http.listen(PORT, () => {
-      console.log("listening on port: " + PORT);
-    });
+    console.log("sequelize conneted")
   })
   .catch((err) => {
     console.log(err);
