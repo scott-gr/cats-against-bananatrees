@@ -265,14 +265,14 @@ const updateRoom = (roomId, playerCount, playerId, currentRoundId) => {
   });
 }
 
-// socket.on("confirmRoomCreated", (id) => {
-//   sessionStorage.setItem("roomId", id);
-//   const playerName = sessionStorage.getItem("userName");
-//   createPlayer(id, playerName);
-// })
+socket.on("confirmRoomCreated", (id) => {
+  sessionStorage.setItem("roomId", id);
+  const playerName = sessionStorage.getItem("userName");
+  createPlayer(id, playerName);
+})
 
-// socket.on("newmsg", (data) => {
-//   const { message, user } = data;
+socket.on("newmsg", (data) => {
+  const { message, user } = data;
 
   // const now = new Date();
   // let hour = now.getHours();
@@ -282,65 +282,65 @@ const updateRoom = (roomId, playerCount, playerId, currentRoundId) => {
   //   hour = 12;
   // }
   // const minutes = now.getMinutes();
-//   const chatEntry = $(`<li>${user}: ${message}</li>`);
-//   $("#chatEntries").prepend(chatEntry);
-//   $("#chatInput").val("");
-// });
+  const chatEntry = $(`<li>${user}: ${message}</li>`);
+  $("#chatEntries").prepend(chatEntry);
+  $("#chatInput").val("");
+});
 
-// socket.on("userExists", (data) => {
-//   $("#error-container").css("display", "block");
-//   $("#error-container").html(data);
-//   $("#indexName").val("");
-// });
+socket.on("userExists", (data) => {
+  $("#error-container").css("display", "block");
+  $("#error-container").html(data);
+  $("#indexName").val("");
+});
 
-// socket.on("userSet", (data) => {
-//   const { username } = data;
-//   sessionStorage.setItem("userName", username);
-//   if (location.href.indexOf("/pregame") === -1) {
-//     location.href = "/pregame";
-//   } else {
-//     const welcome = $(`<p id="welcomeText">Hello, ${username}.<br>
-//     Copy the URL and invite your friends.<br>
-//     Once everyone arrives, the host will start the game.<br>
-//     Wait patiently.</p>`);
-//     $("#welcome").append(welcome);
-//     socket.emit("arrival");
-//   }
-// });
+socket.on("userSet", (data) => {
+  const { username } = data;
+  sessionStorage.setItem("userName", username);
+  if (location.href.indexOf("/pregame") === -1) {
+    location.href = "/pregame";
+  } else {
+    const welcome = $(`<p id="welcomeText">Hello, ${username}.<br>
+    Copy the URL and invite your friends.<br>
+    Once everyone arrives, the host will start the game.<br>
+    Wait patiently.</p>`);
+    $("#welcome").append(welcome);
+    socket.emit("arrival");
+  }
+});
 
-// socket.on("userList", (data) => {
-//   $("#pgPlayersList").empty();
-//   data.forEach((playerName) => {
-//     $("#pgPlayersList").append($(`<p>${playerName}</p>`));
-//   });
+socket.on("userList", (data) => {
+  $("#pgPlayersList").empty();
+  data.forEach((playerName) => {
+    $("#pgPlayersList").append($(`<p>${playerName}</p>`));
+  });
 
-//   const beginButton = $("#beginButton");
-//   if (data.length > 1 && beginButton) {
-//     beginButton.click(() => {
-//       socket.emit("startGameClick");
-//     });
-//   }
-// });
+  const beginButton = $("#beginButton");
+  if (data.length > 1 && beginButton) {
+    beginButton.click(() => {
+      socket.emit("startGameClick");
+    });
+  }
+});
 
-// socket.on("newmsg", (data) => {
-//   if (user) {
-//     $("#message-container").html(
-//       "<div><b>" + data.user + "</b>: " + data.message + "</div>"
-//     );
-//   }
-// });
+socket.on("newmsg", (data) => {
+  if (user) {
+    $("#message-container").html(
+      "<div><b>" + data.user + "</b>: " + data.message + "</div>"
+    );
+  }
+});
 
-// socket.on("startGame", () => {
+socket.on("startGame", () => {
 
-  // getAllQuestionCards();
-  // getRandomCardById(questionCards)
+  getAllQuestionCards();
+  getRandomCardById(questionCards)
 
-  // const isHost = sessionStorage.getItem("isHost");
-  // if (isHost === "true") {
-  //   createNewRoom();
-  // }
+  const isHost = sessionStorage.getItem("isHost");
+  if (isHost === "true") {
+    createNewRoom();
+  }
 
-// });
+});
 
 // LEAVING THIS TO ADD FUNCTIONALITY LATER
 // $(window).on("beforeunload", () => {
