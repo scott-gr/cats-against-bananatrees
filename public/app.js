@@ -4,7 +4,9 @@ const getRandomCardById = async (data) => {
   sessionStorage.setItem("selected question", JSON.stringify(randomQuestion));
 
   const roundId = sessionStorage.getItem("roundId");
+  const judgeId = sessionStorage.getItem("playerId");
   await putQuestionCard(roundId, randomQuestion.id);
+  await putJudgeId(roundId, judgeId);
 };
 
 const putQuestionCard = (roundId, questionCardId) => {
@@ -13,6 +15,17 @@ const putQuestionCard = (roundId, questionCardId) => {
     data: {
       roundId, 
       questionCardId
+    },
+    method: "PUT"
+  })
+}
+
+const putJudgeId = (roundId, judgeId) => {
+  return $.ajax ({
+    url: "/api/addroundjudgeid",
+    data: {
+      roundId, 
+      judgeId
     },
     method: "PUT"
   })
@@ -183,7 +196,7 @@ const broadcastNewPlayer = (newUser) => {
 
 const getGameObj = () => {
   const roomId = sessionStorage.getItem("roomId");
-  const playerId = sessionStorage.getItem("playerId");
+  const playerId = parseInt(sessionStorage.getItem("playerId"));
   const questionCardDeck = JSON.parse(sessionStorage.getItem("questionCards"));
   const answerCardDeck = JSON.parse(sessionStorage.getItem("answerCards"));
 
@@ -191,17 +204,21 @@ const getGameObj = () => {
     $.get("/api/getgame/" + roomId, (res) => {
       console.log("res", res);
       const questionCardId = res.currentRound.questionCardId;
+      const judgeId = res.currentRound.judgeId;
       const players = res.players;
-      const player = players.filter((playerObj) => playerObj.id === parseInt(playerId));
+      const player = players.filter((playerObj) => playerObj.id === playerId);
       const hand = player[0].currentHandCardIds;
-      console.log(hand);
-      hand.forEach((cardid) => {
-        const cardText = answerCardDeck[cardid.toString()];
-        const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
-        $("#cards").append(cardDiv);
-      });
+
+      if (judgeId !== playerId) {
+        hand.forEach((cardid) => {
+          const cardText = answerCardDeck[cardid.toString()];
+          const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
+          $("#cards").append(cardDiv);
+        });
+      }
+
       const questionCardText = questionCardDeck[questionCardId.toString()];
-      $("#gameCards").text(questionCardText);
+      $("#gameCards").html(questionCardText);
     });
   }
 };

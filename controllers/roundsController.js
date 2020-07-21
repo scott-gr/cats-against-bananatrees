@@ -76,10 +76,40 @@ module.exports = function (router) {
   router.put("/api/addroundquestion", (req, res) => {
     const roundId = parseInt(req.body.roundId);
     const questionCardId = parseInt(req.body.questionCardId);
-    console.log("roundid", roundId);
     db.Rounds.update(
       {
         question_card_id: questionCardId
+      },
+      {
+        where: {
+          id: roundId,
+        },
+      }
+    )
+      .then((result) => {
+        console.log("round question", result);
+        res.json({
+          error: false,
+          data: result,
+          message: "Successfully updated round",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: "Unable to update round.",
+        });
+      });
+  });
+
+  router.put("/api/addroundjudgeid", (req, res) => {
+    const roundId = parseInt(req.body.roundId);
+    const judgeId = parseInt(req.body.judgeId);
+    db.Rounds.update(
+      {
+        judge_id: judgeId
       },
       {
         where: {
