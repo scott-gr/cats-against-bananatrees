@@ -49,4 +49,26 @@ module.exports = function (router) {
         });
       });
   });
+  router.get("/api/getRounds/:game_round"), (req, res) => {
+    db.Rounds.findAll({
+      where: {
+        room_id: req.params.game_round
+      }
+    })
+      .then((result) => {
+        res.json({
+          error: false,
+          data: result,
+          message: 'Successfully retrieved rounds'
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: 'Unable to retrieve rounds'
+        })
+      })
+  }
 };
