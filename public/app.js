@@ -1,5 +1,5 @@
 
-const db = require("../models");
+// const db = require("../models");
 
 const answerDeck = {
   "1": "Vigorous jazz hands.",
@@ -276,23 +276,7 @@ const getAnswerCards = () => {
   });
 };
 
-const createHand = () => {
-  $.ajax({
-    url: "/api/hands",
-    data: {
-      "player_id": playerId,
-      "answer_card_id": randomAnswer
-    },
-    method: "POST"
-  }).then((res) => {
-    const {data: {id} } = res;
-    sessionStorage.setItem("handId", id);
-  }).catch((err)=> {
-    console.log(err);
-  });
-}
-
-const drawhand = () => {
+const drawhand = async () => {
   const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7");
   console.log("newHand", newHand);
 }
@@ -443,7 +427,7 @@ const getGameObj = () => {
     const hand = player[0].currentHandCardIds;
     console.log(hand);
     hand.forEach((cardid) => {
-      // const cardText = answerDeck[cardid.toString()];
+      const cardText = answerDeck[cardid.toString()];
       const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
       $("#cards").append(cardDiv);
     });
@@ -466,11 +450,7 @@ const createHand = () => {
   }).catch((err)=> {
     console.log(err);
   });
-}
-const drawhand = async () => {
-  const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7");
-  console.log("newHand", newHand);
-}
+};
 
 const createRound = (roomId) => {
   $.ajax({
