@@ -306,6 +306,16 @@ const submitChat = () => {
   }
 };
 
+//copy url to clipboard
+const copyCurrentUrl = () => {
+  let url = window.location.href;
+  let textToCopy = document.getElementById("hiddenURL");
+  textToCopy.setAttribute("value", url) 
+  textToCopy.select();
+  textToCopy.setSelectionRange(0, 99999); 
+  document.execCommand("copy")
+};
+
 // chat enter handler
 const inputKeyUp = (e) => {
   e.which = e.which || e.keyCode;
@@ -655,4 +665,4 @@ const roundAnswerCards = (id, text) => {
   }).catch((err) => {
     console.log(err);
   });
-}
+};

@@ -20,7 +20,6 @@ h2 {
   width: 112%;
 }
 
-
 .bold {
   font-weight: 600;
 }
@@ -124,6 +123,12 @@ h2 {
   margin: 0% 8%;
   font-size: 1.5em;
   width: 70%;
+}
+
+#inputdiv {
+  position: absolute;
+  top: -90%;
+  left: -90%;
 }
 
 #logo {
@@ -268,7 +273,6 @@ h2 {
   #enterPlayerName {
     margin: -1% 0% 0% 8%;
     font-size: 90%;
-
   }
   #indexName {
     font-size: 93%;
@@ -285,5 +289,3 @@ h2 {
     margin-top: 19%;
   }
 }
-
-
