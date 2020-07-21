@@ -408,8 +408,7 @@ const getGameObj = () => {
     console.log(players);
     const player = players.filter((playerObj) => playerObj.id === 177);
     const hand = player[0].currentHandCardIds;
-    console.log("hand", hand);
-    // createHand();
+    console.log(hand);
     hand.forEach((cardid) => {
       // const cardText = answerDeck[cardid.toString()];
       const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
