@@ -255,9 +255,10 @@ const getAllAnswerCards = () => {
   });
 };
 
+let randomAnswer;
 // draw 1 random answer card
 const drawAnswerCard = (answerData) => {
-  let randomAnswer = answerData[Math.floor(Math.random() * answerData.length)];
+  randomAnswer = answerData[Math.floor(Math.random() * answerData.length)];
   sessionStorage.setItem("drawn answer cards", JSON.stringify(randomAnswer));
   location.href = "/game";
 };
@@ -407,14 +408,37 @@ const getGameObj = () => {
     console.log(players);
     const player = players.filter((playerObj) => playerObj.id === 177);
     const hand = player[0].currentHandCardIds;
-    console.log(hand);
+    console.log("hand", hand);
+    // createHand();
     hand.forEach((cardid) => {
-      const cardText = answerDeck[cardid.toString()];
+      // const cardText = answerDeck[cardid.toString()];
       const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
       $("#cards").append(cardDiv);
     });
   });
 };
+
+const createHand = () => {
+  $.ajax({
+    url: "/api/createhand",
+    data: {
+      "player_id": playerId,
+      "answer_card_id": randomAnswer
+      ///math random id function
+    },
+    method: "POST"
+  }).then((res) => {
+    console.log("random", randomAnswer);
+    const {data: {id} } = res;
+    sessionStorage.setItem("handId", id);
+  }).catch((err)=> {
+    console.log(err);
+  });
+}
+const drawhand = async () => {
+  const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7");
+  console.log("newHand", newHand);
+}
 
 const createRound = (roomId) => {
   $.ajax({
@@ -510,8 +534,8 @@ const getPlayers = (roomId) => {
         parseInt(playerId),
         parseInt(currentRoundId)
       );
-      getQuestionCards();
-      getAnswerCards();
+      // getQuestionCards();
+      // getAnswerCards();
     })
     .catch((err) => {
       console.log(err);
