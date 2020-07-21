@@ -8,9 +8,9 @@ IN A WORLD where you can't get together with your friends to enjoy drinks, trash
 
 ## Description
 
-Satisfy the itch to make your friends and family uncomfortable, all from the safety of your couch or toilet. Create your own clever username and join your game-mates in furious banter while selecting the best(?) answer for each round.
+Satisfy the itch to make your friends and family uncomfortable from the safety of your couch or toilet. Create your own clever username and join your game-mates in the wittiest of banter while selecting the best(?) answer for each round.
 
-Cats Against Banana Trees (CABT) uses socket.io, sequelize, and express-handlebars to deliver a multiplayer online Cards Against Humanity&copy; style experience. Players are able to create their own unique username and then enter a game. During gameplay, socket.io enables both live chat and an interactive and real-time player ui.
+Cats Against Banana Trees (CABT) uses socket.io, sequelize, and express-handlebars to deliver a multiplayer online Cards Against Humanity&copy; style experience. Players are able to create their own unique username and then enter a game. During gameplay, socket.io enables both live chat and an interactive and real-time player ui across multiple users.
 
 ---
 
@@ -46,8 +46,6 @@ After signing in, the user can copy the URL and send it to a friend. If they hav
 The second user is directed to this page, which functions as a waiting room.
 
 ![Second User](public/assets/CABT_second_user2.png "Cats Against Banana Trees Welcome Page")
-
-
 
 
 ---
