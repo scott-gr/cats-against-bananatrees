@@ -354,6 +354,11 @@ const generateStartGameButton = () => {
 };
 
 const generatePlayerNameInput = () => {
+  const newUserGreeting = $(`  
+  <h2>
+    You have a friend.
+    Good for you.
+  </h2>`);
   const newUserButtons = $(`
   <input 
     id="enterPlayerName" 
@@ -372,6 +377,7 @@ const generatePlayerNameInput = () => {
     Click to begin.
   </button>
   `);
+  $("#userHello").append(newUserGreeting);
   $("#guestName").append(newUserButtons);
 };
 
