@@ -18,7 +18,7 @@ module.exports = function (router) {
         });
       });
   });
-  router.post('/api/answer_cards', (req, res) => {
+  router.post('/api/roundAnswer', (req, res) => {
     db.AnswerCards.create({
       id: req.body.id,
       text: req.body.text,

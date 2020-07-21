@@ -351,7 +351,7 @@ socket.on("startGame", () => {
 
 const roundAnswerCards = (id, text) => {
   $.ajax({
-    url: "/api/answer_cards",
+    url: "/api/roundAnswer",
     data: {
       "id": id,
       "text": text
