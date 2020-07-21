@@ -1,14 +1,14 @@
 {
     "development": {
       "username": "root",
-      "password": "Wino4ever",
+      "password": "Gemma2020",
       "database": "gameDB",
       "host": "127.0.0.1",
       "dialect": "mysql"
     },
     "test": {
       "username": "root",
-      "password": null,
+      "password": "Gemma2020",
       "database": "gameDB",
       "host": "127.0.0.1",
       "dialect": "mysql"
