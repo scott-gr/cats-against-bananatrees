@@ -53,10 +53,10 @@ const getAnswerCards = () => {
 
 const createHand = () => {
   $.ajax({
-    url: "/api/createhand",
+    url: "/api/hands",
     data: {
       "player_id": playerId,
-      "answer_card_id": null
+      "answer_card_id": randomAnswer
     },
     method: "POST"
   }).then((res) => {
@@ -68,7 +68,7 @@ const createHand = () => {
 }
 
 const drawhand = () => {
-  const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 10");
+  const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7");
   console.log("newHand", newHand);
 }
 
