@@ -1,13 +1,17 @@
 const db = require('../models');
 
 module.exports = (router) => {
-  router.get('/api/question_cards', (req, res) => {
-    db.QuestionCards.findAll()
+  router.get('/api/playeranswercards/:playerid', (req, res) => {
+    db.PlayersAnswerCards.findAll({
+      where: {
+        player_id: req.params.playerid
+      }
+    })
       .then((result) => {
         res.json({
           error: false,
           data: result,
-          message: 'Successfully retrieved question cards',
+          message: 'Successfully retrieved answer cards',
         });
       })
       .catch((err) => {

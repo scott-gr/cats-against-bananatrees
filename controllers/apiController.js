@@ -26,6 +26,23 @@ router.get("/api/getgame/:roomid", async (req, res) => {
     });
 
     const masterObj = constructMasterObj(roomObj, roundsArr, playersArr);
+    console.log("one");
+    for (i = 0; i < masterObj.players.length; i++) {
+      console.log(i);
+      const player = masterObj.players[i];
+
+      const playerCards = await db.PlayersAnswerCards.findAll({
+        where: {
+          player_id: player.id
+        }
+      });
+
+      const handCards = playerCards.map((card) => card.answer_card_id);
+      console.log("handcards", handCards);
+      masterObj.players[i].currentHandCardIds = handCards;
+    
+    };
+  
     // Returns JSON onject containing all data
     res.json(masterObj);
   } catch (err) {
