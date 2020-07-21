@@ -1,3 +1,5 @@
+const db = require("../models");
+
 let socket = io();
 
 
@@ -49,7 +51,26 @@ const getAnswerCards = () => {
   });
 };
 
-const 
+const createHand = () => {
+  $.ajax({
+    url: "/api/createhand",
+    data: {
+      "player_id": playerId,
+      "answer_card_id": null
+    },
+    method: "POST"
+  }).then((res) => {
+    const {data: {id} } = res;
+    sessionStorage.setItem("handId", id);
+  }).catch((err)=> {
+    console.log(err);
+  });
+}
+
+const drawhand = () => {
+  const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 10");
+  console.log("newHand", newHand);
+}
 
 
 // validation for name input, stores first user as host
