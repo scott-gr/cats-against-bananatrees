@@ -224,19 +224,25 @@ const answerDeck = {
   "222": "Moderate-to-severe joint pain.",
 };
 
-// get all question cards from db
-// const getAllQuestionCards = () => {
-//   $.get("/api/question_cards", function (data) {
-//     questionCards = data;
-//   });
-// };
-
 // get a random question card from db
-const getRandomCardById = (data) => {
-  console.log(data);
+const getRandomCardById = async (data) => {
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem("selected question", JSON.stringify(randomQuestion));
+
+  const roundId = sessionStorage.getItem("roundId");
+  await putQuestionCard(roundId, randomQuestion.id);
 };
+
+const putQuestionCard = (roundId, questionCardId) => {
+  return $.ajax ({
+    url: "/api/addroundquestion",
+    data: {
+      roundId, 
+      questionCardId
+    },
+    method: "PUT"
+  })
+}
 
 const getQuestionCards = () => {
   return $.get("/api/question_cards");
@@ -405,9 +411,11 @@ const getGameObj = () => {
   // TODO fix this to use game id
   const roomId = sessionStorage.getItem("roomId");
   const playerId = sessionStorage.getItem("playerId");
+  const questionCardDeck = JSON.parse(sessionStorage.getItem("questionCards"));
   if (roomId !== undefined) {
     $.get("/api/getgame/" + roomId, (res) => {
       console.log("res", res);
+      const questionCardId = res.currentRound.questionCardId;
       const players = res.players;
       const player = players.filter((playerObj) => playerObj.id === parseInt(playerId));
       const hand = player[0].currentHandCardIds;
@@ -417,6 +425,8 @@ const getGameObj = () => {
         const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
         $("#cards").append(cardDiv);
       });
+      const questionCardText = questionCardDeck[questionCardId.toString()];
+      $("#gameCards").text(questionCardText);
     });
   }
 };
@@ -543,7 +553,10 @@ const getAllCardInfo = async () => {
   const questionCardLookup = {};
   data.forEach((card) => (questionCardLookup[card.id] = card.text));
   sessionStorage.setItem("questionCards", JSON.stringify(questionCardLookup));
-  getRandomCardById(data);
+  const isHost = sessionStorage.getItem("isHost");
+  if (isHost === "true") {
+    await getRandomCardById(data);
+  }
 
   const answerRes = await getAnswerCards();
   const { data: answerData } = answerRes;
@@ -677,9 +690,6 @@ socket.on("newmsg", (data) => {
 });
 
 socket.on("startGame", () => {
-  // getAllQuestionCards();
-  // getRandomCardById(questionCards);
-
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
     createNewRoom();
