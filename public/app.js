@@ -1,5 +1,5 @@
 
-const db = require("../models");
+// const db = require("../models");
 
 const answerDeck = {
   "1": "Vigorous jazz hands.",
@@ -258,9 +258,10 @@ const getAllAnswerCards = () => {
   });
 };
 
+let randomAnswer;
 // draw 1 random answer card
 const drawAnswerCard = (answerData) => {
-  let randomAnswer = answerData[Math.floor(Math.random() * answerData.length)];
+  randomAnswer = answerData[Math.floor(Math.random() * answerData.length)];
   sessionStorage.setItem("drawn answer cards", JSON.stringify(randomAnswer));
   location.href = "/game";
 };
@@ -275,23 +276,7 @@ const getAnswerCards = () => {
   });
 };
 
-const createHand = () => {
-  $.ajax({
-    url: "/api/hands",
-    data: {
-      "player_id": playerId,
-      "answer_card_id": randomAnswer
-    },
-    method: "POST"
-  }).then((res) => {
-    const {data: {id} } = res;
-    sessionStorage.setItem("handId", id);
-  }).catch((err)=> {
-    console.log(err);
-  });
-}
-
-const drawhand = () => {
+const drawhand = async () => {
   const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7");
   console.log("newHand", newHand);
 }
@@ -326,6 +311,16 @@ const submitChat = () => {
       user: userName,
     });
   }
+};
+
+//copy url to clipboard
+const copyCurrentUrl = () => {
+  let url = window.location.href;
+  let textToCopy = document.getElementById("hiddenURL");
+  textToCopy.setAttribute("value", url) 
+  textToCopy.select();
+  textToCopy.setSelectionRange(0, 99999); 
+  document.execCommand("copy")
 };
 
 // chat enter handler
@@ -439,6 +434,24 @@ const getGameObj = () => {
   });
 };
 
+const createHand = () => {
+  $.ajax({
+    url: "/api/createhand",
+    data: {
+      "player_id": playerId,
+      "answer_card_id": randomAnswer
+      ///math random id function
+    },
+    method: "POST"
+  }).then((res) => {
+    console.log("random", randomAnswer);
+    const {data: {id} } = res;
+    sessionStorage.setItem("handId", id);
+  }).catch((err)=> {
+    console.log(err);
+  });
+};
+
 const createRound = (roomId) => {
   $.ajax({
     url: "/api/createround",
@@ -533,8 +546,8 @@ const getPlayers = (roomId) => {
         parseInt(playerId),
         parseInt(currentRoundId)
       );
-      getQuestionCards();
-      getAnswerCards();
+      // getQuestionCards();
+      // getAnswerCards();
     })
     .catch((err) => {
       console.log(err);
@@ -655,4 +668,4 @@ const roundAnswerCards = (id, text) => {
   }).catch((err) => {
     console.log(err);
   });
-}
+};

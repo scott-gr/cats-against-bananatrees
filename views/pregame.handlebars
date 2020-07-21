@@ -9,7 +9,11 @@
   <div id="logo" class="box">
     Cats<br>Against<br>Banana<br>Trees
   </div>
-  <button id="copyURL" class="pgButtonBox" type="pregame-button" name="button" onclick="copyURL()">
+  <div id="inputdiv">
+    <input type="text" id="hiddenURL" value="">
+  </div>
+
+  <button id="copyURL" class="pgButtonBox" type="pregame-button" name="button" onclick="copyCurrentUrl()">
     Copy URL
   </button>
   <div id="startButtonContainer"></div>
@@ -17,6 +21,6 @@
 </div>
 <script>
   $("document").ready(() => {
-    generatePregameDisplay()
+    generatePregameDisplay();
   });
 </script>
