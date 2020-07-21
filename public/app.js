@@ -44,10 +44,12 @@ const getAnswerCards = () => {
     const { answerData } = res;
     const answerCardLookup = {};
     answerData.forEach((card) => answerCardLookup[card.id] = card.text);
-    sessionStorage.setItem("questionCards", JSON.stringify(answerCardLookup));
+    sessionStorage.setItem("answerCards", JSON.stringify(answerCardLookup));
     drawAnswerCard(answerData);
   });
 };
+
+const 
 
 
 // validation for name input, stores first user as host
