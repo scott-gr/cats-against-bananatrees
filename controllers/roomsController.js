@@ -59,7 +59,6 @@ module.exports = function (router) {
       }
     )
       .then((result) => {
-        console.log("room put route:", result);
         res.json({
           error: false,
           data: result,

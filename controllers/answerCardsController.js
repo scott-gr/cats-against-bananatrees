@@ -18,4 +18,24 @@ module.exports = function (router) {
         });
       });
   });
+  router.post('/api/answer_cards', (req, res) => {
+    db.AnswerCards.create({
+      id: req.body.id,
+      text: req.body.text,
+    })
+    .then((result) => {
+      res.json({
+        error: false,
+        data: result,
+        message: "Successfully created new thing"
+      });
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: true,
+        data: null,
+        message: "unable to create a new thing"
+      })
+    })
+  })
 };
