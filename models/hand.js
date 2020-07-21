@@ -1,7 +1,7 @@
 //also known as the hand
 module.exports = function (sequelize, DataTypes) {
-  const PlayersAnswerCards = sequelize.define(
-    "PlayersAnswerCards",
+  const Hand = sequelize.define(
+    "Hand",
     {
       player_id: DataTypes.INTEGER,
       answer_card_id: DataTypes.INTEGER
@@ -10,5 +10,5 @@ module.exports = function (sequelize, DataTypes) {
       timestamps: false,
     }
   );
-  return PlayersAnswerCards;
+  return Hand;
 };
