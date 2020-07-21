@@ -1,5 +1,6 @@
 const db = require("../models");
-module.exports = function (router) {
+
+module.exports = (router) => {
   router.get("/api/getroom/:roomid", (req, res) => {
     db.Rooms.findOne({
       where: {
