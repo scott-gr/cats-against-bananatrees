@@ -13,10 +13,30 @@ h1 {
 }
 
 #cards {
-  width: 80%;
-  position: absolute;
-  left: 40%;
+  position: relative;
+  left: 35%;
+  width: 65%;
+  margin: 3%;
+}
+
+#gameCards {
+  border: 9px solid white;
+  background-color: black;
   color: white;
+}
+
+.cardBox {
+  background-color: #fafafa;
+  width: 20%;
+  padding: 6%;
+  border-radius: 10px;
+  margin: 0% 5% 5% 5%;
+  border: 9px solid lightgray
+}
+
+.container {
+  display: flex;
+  flex-flow: wrap;
 }
 
 .box {

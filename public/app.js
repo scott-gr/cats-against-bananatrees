@@ -402,7 +402,7 @@ const getGameObj = () => {
     console.log(hand);
     hand.forEach((cardid) => {
       const cardText = answerDeck[cardid.toString()];
-      const cardDiv = $(`<div>${cardText}</div>`);
+      const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
       $("#cards").append(cardDiv);
     })
 
