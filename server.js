@@ -67,6 +67,7 @@ io.on("connection", (socket) => {
 //   // });
 });
 
+
 require("./controllers/roomsController.js")(app);
 require("./controllers/questionCardsController.js")(app);
 require("./controllers/answerCardsController.js")(app);
@@ -85,4 +86,3 @@ db.sequelize
   .catch((err) => {
     console.log(err);
   });
-

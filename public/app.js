@@ -392,6 +392,7 @@ const broadcastNewPlayer = (newUser) => {
   }
 };
 
+
 const getGameObj = () => {
   // TODO fix this to use game id
   const tempRoomNum = 13;
@@ -408,17 +409,6 @@ const getGameObj = () => {
     });
   });
 };
-
-// gets player names via prompt
-// emits info to display arrival on all pages
-// const getNewUserName = () => {
-//   const newUser = prompt("Please enter your name");
-//   if (!newUser) {
-//     getNewUserName();
-//   } else {
-//     socket.emit("setUsername", newUser);
-//   }
-// };
 
 const createRound = (roomId) => {
   $.ajax({
@@ -440,6 +430,17 @@ const createRound = (roomId) => {
       console.log(err);
     });
 };
+
+const getRounds = (roomId) => {
+  $.ajax({
+    url: "/api/getRounds/" + roomId,
+    method: "GET"
+  }).then((res) => {
+    const { data } = res;
+    const rounds = data.length;
+    sessionStorage.setItem("rounds", rounds)
+  })
+}
 
 const createNewRoom = () => {
   $.ajax({
@@ -611,8 +612,18 @@ socket.on("startGame", () => {
 //   }
 // });
 
-function copyURL() {
-  const copyText = document.querySelector("#copyURL");
-  copyText.select("something");
-  document.execCommand("copy");
-};
+const roundAnswerCards = (id, text) => {
+  $.ajax({
+    url: "/api/roundAnswer",
+    data: {
+      "id": id,
+      "text": text
+    },
+    method: "POST"
+  }).then((res) => {
+    const { data: {id} } = res;
+    sessionStorage.setItem("id", id);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
