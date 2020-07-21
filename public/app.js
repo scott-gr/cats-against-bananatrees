@@ -212,7 +212,8 @@ const answerDeck = {
   "211": "Mufasa's death scene.",
   "212": "The Harlem Globetrotters.",
   "213": "Demonic possession.",
-  "214": "Drinking ten 5-hour ENERGYs&reg; to get fifty continuous hours of energy.",
+  "214":
+    "Drinking ten 5-hour ENERGYs&reg; to get fifty continuous hours of energy.",
   "215": "Putting an entire peanut butter and jelly sandwich into the VCR.",
   "216": "An unstoppable wave of fire ants.",
   "217": "A greased-up Matthew McConaughey.",
@@ -220,20 +221,20 @@ const answerDeck = {
   "219": "Not contributing to society in any meaningful way.",
   "220": "Velcro&trade;.",
   "221": "A PowerPoint presentation.",
-  "222": "Moderate-to-severe joint pain."
+  "222": "Moderate-to-severe joint pain.",
 };
 
 // get all question cards from db
 const getAllQuestionCards = () => {
-  $.get("/api/question_cards", function(data) {
+  $.get("/api/question_cards", function (data) {
     questionCards = data;
   });
-}
+};
 
 // get a random question card from db
 const getRandomCardById = (data) => {
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
-  sessionStorage.setItem('random shit', JSON.stringify(randomQuestion))
+  sessionStorage.setItem("random shit", JSON.stringify(randomQuestion));
   location.href = "/game";
 };
 
@@ -241,7 +242,7 @@ const getQuestionCards = () => {
   $.get("/api/question_cards", (res) => {
     const { data } = res;
     const questionCardLookup = {};
-    data.forEach((card) => questionCardLookup[card.id] = card.text);
+    data.forEach((card) => (questionCardLookup[card.id] = card.text));
     sessionStorage.setItem("questionCards", JSON.stringify(questionCardLookup));
     getRandomCardById(data);
   });
@@ -249,7 +250,7 @@ const getQuestionCards = () => {
 
 // get all answer cards from db
 const getAllAnswerCards = () => {
-  $.get("/api/answer_cards", function(answerData) {
+  $.get("/api/answer_cards", function (answerData) {
     answerCards = answerData;
   });
 };
@@ -257,7 +258,7 @@ const getAllAnswerCards = () => {
 // draw 1 random answer card
 const drawAnswerCard = (answerData) => {
   let randomAnswer = answerData[Math.floor(Math.random() * answerData.length)];
-  sessionStorage.setItem('drawn answer cards', JSON.stringify(randomAnswer))
+  sessionStorage.setItem("drawn answer cards", JSON.stringify(randomAnswer));
   location.href = "/game";
 };
 
@@ -265,12 +266,11 @@ const getAnswerCards = () => {
   $.get("/api/answer_cards", (res) => {
     const { answerData } = res;
     const answerCardLookup = {};
-    answerData.forEach((card) => answerCardLookup[card.id] = card.text);
+    answerData.forEach((card) => (answerCardLookup[card.id] = card.text));
     sessionStorage.setItem("questionCards", JSON.stringify(answerCardLookup));
     drawAnswerCard(answerData);
   });
 };
-
 
 // validation for name input, stores first user as host
 const roomInit = () => {
@@ -323,11 +323,13 @@ const generatePregameDisplay = () => {
     generatePlayerNameInput();
   } else {
     if (isHost === "true") {
-      const welcome = $(`<p id="welcomeText">Hello, ${user}.<br>
+      const welcome = $(`<p id="welcomeText"><span class="bold">Hello, ${user}.<br></span>
       Copy the URL and invite your friends.<br>
       Once they arrive, start the game.<br>
       It's that simple.</p>`);
       generateStartGameButton();
+      const title = $(`<h2>Players List<h2>`);
+      $("#playersListTitle").append(title);
       $("#welcome").append(welcome);
       socket.emit("arrival");
     }
@@ -349,7 +351,6 @@ const generateStartGameButton = () => {
   </button>
   `);
   $("#startButtonContainer").append(startGameButton);
-  const playerNameValue = $("#startGameButton").text();
 };
 
 const generatePlayerNameInput = () => {
@@ -374,7 +375,7 @@ const generatePlayerNameInput = () => {
   $("#guestName").append(newUserButtons);
 };
 
-$( "#enterPlayerName" ).keyup(function() {
+$("#enterPlayerName").keyup(function () {
   createPlayerNamer();
 });
 
@@ -393,7 +394,7 @@ const broadcastNewPlayer = (newUser) => {
 
 const getGameObj = () => {
   // TODO fix this to use game id
-  const tempRoomNum = 13
+  const tempRoomNum = 13;
   $.get("/api/getgame/" + tempRoomNum, (res) => {
     const players = res.players;
     console.log(players);
@@ -404,10 +405,9 @@ const getGameObj = () => {
       const cardText = answerDeck[cardid.toString()];
       const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
       $("#cards").append(cardDiv);
-    })
-
-  })
-}
+    });
+  });
+};
 
 // gets player names via prompt
 // emits info to display arrival on all pages
@@ -424,91 +424,112 @@ const createRound = (roomId) => {
   $.ajax({
     url: "/api/createround",
     data: {
-      "room_id": roomId,
-      "game_round": 1
+      room_id: roomId,
+      game_round: 1,
     },
-    method: "POST"
-  }).then((res) => {
-    const { data: {id} } = res;
-    sessionStorage.setItem("roundId", id);
-    getPlayers(roomId);
-  }).catch((err) => {
-    console.log(err);
-  });
+    method: "POST",
+  })
+    .then((res) => {
+      const {
+        data: { id },
+      } = res;
+      sessionStorage.setItem("roundId", id);
+      getPlayers(roomId);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const createNewRoom = () => {
   $.ajax({
     url: "/api/createnewroom",
     data: {},
-    method: "POST"
-  }).then((res) => {
-    const { data: {id} } = res;
-    socket.emit("roomCreated", id);
-  }).catch((err) => {
-    console.log(err);
-  });
-}
+    method: "POST",
+  })
+    .then((res) => {
+      const {
+        data: { id },
+      } = res;
+      socket.emit("roomCreated", id);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const createPlayer = (roomId, playerName) => {
   $.ajax({
     url: "/api/createplayer",
     data: {
-      "room_id": roomId,
-      "socket_id": "",
-      "name": playerName
+      room_id: roomId,
+      socket_id: "",
+      name: playerName,
     },
-    method: "POST"
-  }).then((res) => {
-    const { data: {id} } = res;
-    sessionStorage.setItem("playerId", id);
-    const isHost = sessionStorage.getItem("isHost");
-    if (isHost === "true") {
-      createRound(roomId);
-    } else {
-      getQuestionCards();
-      getAnswerCards();
-    }
-  }).catch((err) => {
-    console.log(err);
-  });
-}
+    method: "POST",
+  })
+    .then((res) => {
+      const {
+        data: { id },
+      } = res;
+      sessionStorage.setItem("playerId", id);
+      const isHost = sessionStorage.getItem("isHost");
+      if (isHost === "true") {
+        createRound(roomId);
+      } else {
+        getQuestionCards();
+        getAnswerCards();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const getPlayers = (roomId) => {
   $.ajax({
     url: "/api/getroomplayers/" + roomId,
-    method: "GET"
-  }).then((res) => {
-    const { data } = res;
-    const playerCount = data.length;
-    sessionStorage.setItem("playerCount", playerCount);
-    const playerId = sessionStorage.getItem("playerId");
-    const currentRoundId = sessionStorage.getItem("roundId");
-    updateRoom(parseInt(roomId), parseInt(playerCount), parseInt(playerId), parseInt(currentRoundId));
-    getQuestionCards();
-    getAnswerCards();
-  }).catch((err) => {
-    console.log(err);
-  });
-}
+    method: "GET",
+  })
+    .then((res) => {
+      const { data } = res;
+      const playerCount = data.length;
+      sessionStorage.setItem("playerCount", playerCount);
+      const playerId = sessionStorage.getItem("playerId");
+      const currentRoundId = sessionStorage.getItem("roundId");
+      updateRoom(
+        parseInt(roomId),
+        parseInt(playerCount),
+        parseInt(playerId),
+        parseInt(currentRoundId)
+      );
+      getQuestionCards();
+      getAnswerCards();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const updateRoom = (roomId, playerCount, playerId, currentRoundId) => {
   $.ajax({
     url: "/api/updateroom",
     method: "PUT",
-    data: {roomId, playerCount, playerId, currentRoundId}
-  }).then((res) => {
-    console.log(res);
-  }).catch((err) => {
-    console.log(err);
-  });
-}
+    data: { roomId, playerCount, playerId, currentRoundId },
+  })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 socket.on("confirmRoomCreated", (id) => {
   sessionStorage.setItem("roomId", id);
   const playerName = sessionStorage.getItem("userName");
   createPlayer(id, playerName);
-})
+});
 
 socket.on("newmsg", (data) => {
   const { message, user } = data;
@@ -538,11 +559,13 @@ socket.on("userSet", (data) => {
   if (location.href.indexOf("/pregame") === -1) {
     location.href = "/pregame";
   } else {
-    const welcome = $(`<p id="welcomeText">Hello, ${username}.<br>
+    const welcome = $(`<p id="welcomeText"><span class="bold">Hello, ${username}.<br></span>
     Copy the URL and invite your friends.<br>
     Once everyone arrives, the host will start the game.<br>
     Wait patiently.</p>`);
+    const title = $(`<h2>Players List<h2>`);
     $("#welcome").append(welcome);
+    $("#playersListTitle").append(title);
     socket.emit("arrival");
   }
 });
@@ -570,15 +593,13 @@ socket.on("newmsg", (data) => {
 });
 
 socket.on("startGame", () => {
-
   getAllQuestionCards();
-  getRandomCardById(questionCards)
+  getRandomCardById(questionCards);
 
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
     createNewRoom();
   }
-
 });
 
 // LEAVING THIS TO ADD FUNCTIONALITY LATER
@@ -589,3 +610,9 @@ socket.on("startGame", () => {
 //     socket.emit("playerLeft", playerLeaving);
 //   }
 // });
+
+function copyURL() {
+  const copyText = document.querySelector("#copyURL");
+  copyText.select("something");
+  document.execCommand("copy");
+};

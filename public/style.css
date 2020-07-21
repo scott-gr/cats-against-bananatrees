@@ -10,6 +10,7 @@ h1 {
   font-weight: 400;
   top: 10%;
   font-size: 2em;
+  line-height: 1.5em;
 }
 
 #cards {
@@ -25,18 +26,8 @@ h1 {
   color: white;
 }
 
-.cardBox {
-  background-color: #fafafa;
-  width: 20%;
-  padding: 6%;
-  border-radius: 10px;
-  margin: 0% 5% 5% 5%;
-  border: 9px solid lightgray
-}
-
-.container {
-  display: flex;
-  flex-flow: wrap;
+.bold {
+  font-weight: 600;
 }
 
 .box {
@@ -60,6 +51,20 @@ h1 {
 
 .buttonBox:hover {
   box-shadow: inset 0px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.cardBox {
+  background-color: #fafafa;
+  width: 20%;
+  padding: 6%;
+  border-radius: 10px;
+  margin: 0% 5% 5% 5%;
+  border: 9px solid lightgray;
+}
+
+.container {
+  display: flex;
+  flex-flow: wrap;
 }
 
 .pgButtonBox {
@@ -131,6 +136,7 @@ h1 {
 #playersListTitle {
   font-size: 1.5em;
   padding: 10% 0% 0% 0%;
+  font-weight: 600;
 }
 
 #pgMainContent {
@@ -145,6 +151,7 @@ h1 {
 #pgPlayersList {
   font-size: 1.5em;
   padding: 2% 0% 1% 0%;
+  line-height: 1.25em;
 }
 
 #welcomeText {
@@ -153,13 +160,48 @@ h1 {
 }
 
 /* Media Queries */
-@media only screen and (min-width: 1024 and max-width: 1199px) {
+@media only screen and (min-width: 320px) {
+  h1 {
+    font-size: 1.25em;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  h1 {
+    font-size: 1.25em;
+  }
+  .box {
+    margin: 8.5% 8.5% 20%;
+  }
+  .buttonBox {
+    margin: 19% 8%;
+  }
+  .cardBox {
+    margin: 17% 5% -8% 5%;
+  }
+  #indexName {
+    font-size: 93%;
+  }
+  #logo {
+    margin-top: 48%;
+    line-height: 120%;
+    font-size: 1.75em;
+  }
+  #pgMainContent {
+    top: 4.5%;
+  }
+  #startButtonContainer {
+    margin-top: 19%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
   h1 {
     font-size: 1.5em;
   }
 }
 
-@media only screen and (max-width: 1199px) {
+@media only screen and (max-width: 1200px) {
   h1 {
     font-size: 1.5em;
   }

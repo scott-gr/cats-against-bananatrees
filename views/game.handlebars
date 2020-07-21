@@ -8,7 +8,6 @@
     Cats<br>Against<br>Banana<br>Trees
   </div>
   <div id="chatDisplay" class="box">
-    Let the trash talk begin:
     <ul id="chatEntries"></ul>
   </div>
   <input 
@@ -17,9 +16,13 @@
     type="text" 
     name="name" 
     value="" 
-    placeholder="Time to talk some sh!t"
+    placeholder="Trash talk goes here."
     onkeyup="inputKeyUp(event)"
   >
-<button onclick="getGameObj()">Deal</button>
 </div>
+<script>
+  $("document").ready(() => {
+    getGameObj();
+  });
+</script>
 
