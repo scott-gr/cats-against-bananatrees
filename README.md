@@ -28,13 +28,26 @@ Cats Against Banana Trees (CABT) uses socket.io, sequelize, and express-handleba
 
 For local installation:
 
-[Fork the repo from github](https://github.com/mjmoon15/cats-against-bananahammocks). Install npm dependencies. Update the db password in the config.json file.
+[Fork the repo from github](https://github.com/mjmoon15/cats-against-bananahammocks). Install npm dependencies. Update the db password in the config.json file. Run node server.js for localhost access.
 
 ---
 
 ## Usage
 
 [Access the deployed app on heroku here](https://catsagainstbananatrees.herokuapp.com/)
+
+Enter a username and click Start a game. Or Whatever.
+
+Host welcome page 
+![Host welcome](public/assets/cats_against_banana_trees_welcome.png "Cats Against Banana Trees Welcome Page")
+
+After signing in, the user can copy the URL and send it to a friend. If they have any.
+
+The second user is directed to this page, which functions as a waiting room.
+
+![Second User](public/assets/CABT_second_user2.png "Cats Against Banana Trees Welcome Page")
+
+
 
 
 ---
