@@ -1,3 +1,6 @@
+
+const db = require("../models");
+
 const answerDeck = {
   "1": "Vigorous jazz hands.",
   "2": "Flightless birds.",
@@ -266,12 +269,32 @@ const getAnswerCards = () => {
   $.get("/api/answer_cards", (res) => {
     const { answerData } = res;
     const answerCardLookup = {};
-    answerData.forEach((card) => (answerCardLookup[card.id] = card.text));
-    sessionStorage.setItem("questionCards", JSON.stringify(answerCardLookup));
+    answerData.forEach((card) => answerCardLookup[card.id] = card.text);
+    sessionStorage.setItem("answerCards", JSON.stringify(answerCardLookup));
     drawAnswerCard(answerData);
   });
 };
 
+const createHand = () => {
+  $.ajax({
+    url: "/api/hands",
+    data: {
+      "player_id": playerId,
+      "answer_card_id": randomAnswer
+    },
+    method: "POST"
+  }).then((res) => {
+    const {data: {id} } = res;
+    sessionStorage.setItem("handId", id);
+  }).catch((err)=> {
+    console.log(err);
+  });
+}
+
+const drawhand = () => {
+  const newHand = await db.sequelize.query("SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7");
+  console.log("newHand", newHand);
+}
 // validation for name input, stores first user as host
 const roomInit = () => {
   const nameInput = $("#indexName").val();
