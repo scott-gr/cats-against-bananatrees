@@ -12,6 +12,13 @@ h1 {
   font-size: 2em;
 }
 
+#cards {
+  width: 80%;
+  position: absolute;
+  left: 40%;
+  color: white;
+}
+
 .box {
   background-color: #fafafa;
   width: 70%;
