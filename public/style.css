@@ -223,7 +223,7 @@ h2 {
     display: none;
   }
   #chatDisplay {
-    margin: 110% 8.5% 7%;
+    margin: 118% 8.5% 2%;
     height: 10%;
   }
   #copyURL {
@@ -259,7 +259,7 @@ h2 {
     width: 71%;
     position: absolute;
     left: 0.5%;
-    top: 54%;
+    top: 120%;
     height: 32%;
     padding: 2% 8% 10% 3%;
     font-size: 65%;
