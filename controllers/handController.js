@@ -1,5 +1,6 @@
 const db = require('../models');
 
+//get route
 module.exports = function (router) {
   router.get("/api/hands/:playerid", (req, res) => {
   db.Hand.findAll({
@@ -23,7 +24,7 @@ module.exports = function (router) {
       });
     });
 });
-
+//post route
   router.post("/api/hands", (req, res) => {
     db.Hands.create({
       player_id: parseInt(req.body.player_id),
@@ -46,7 +47,7 @@ module.exports = function (router) {
         });
       });
   });
-
+// delete route as option to clear a hand
   router.delete("/api/hands/:id", (req, res) => {
     const id = req.params.id;
     db.Hand.destroy({

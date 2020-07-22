@@ -1,5 +1,6 @@
 const db = require("../models");
 
+//get route
 module.exports = function (router) {
   router.get("/api/getroomplayers/:roomid", (req, res) => {
     db.Players.findAll({
@@ -23,7 +24,7 @@ module.exports = function (router) {
         });
       });
   });
-
+//post route
   router.post("/api/createplayer", (req, res) => {
     db.Players.create({
       name: req.body.name,
