@@ -74,7 +74,6 @@ require("./controllers/playersController.js")(app);
 require("./controllers/roundsController.js")(app);
 require("./controllers/roundAnswerCardsController.js")(app);
 require("./controllers/handController.js")(app);
-require("./controllers/roundsController.js")(app);
 
 db.sequelize
   .sync()

@@ -31,7 +31,7 @@ router.get("/api/getgame/:roomid", async (req, res) => {
       console.log(i);
       const player = masterObj.players[i];
 
-      const playerCards = await db.Hands.findAll({
+      const playerCards = await db.Hand.findAll({
         where: {
           player_id: player.id
         }

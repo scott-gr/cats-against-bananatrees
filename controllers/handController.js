@@ -2,7 +2,7 @@ const db = require('../models');
 
 module.exports = function (router) {
   router.get("/api/hands/:playerid", (req, res) => {
-  db.Hands.findAll({
+  db.Hand.findAll({
     where: {
       player_id:req.params.playerid
     },
@@ -49,7 +49,7 @@ module.exports = function (router) {
 
   router.delete("/api/hands/:id", (req, res) => {
     const id = req.params.id;
-    db.Hands.destroy({
+    db.Hand.destroy({
       where: {id:id}
     })
       .then(deletedHand => {

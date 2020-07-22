@@ -40,7 +40,7 @@ CREATE TABLE `RoundAnswerCards` (
   `round_id` int
 );
 
-CREATE TABLE `Hands` (
+CREATE TABLE `Hand` (
   `id` int,
   `player_id` int,
   `answer_card_id` int
@@ -64,6 +64,6 @@ ALTER TABLE `rounds` ADD FOREIGN KEY (`id`) REFERENCES `roundAnswerCards` (`roun
 
 ALTER TABLE `players` ADD FOREIGN KEY (`id`) REFERENCES `roundAnswerCards` (`player_id`);
 
-ALTER TABLE `Hands` ADD FOREIGN KEY (`player_id`) REFERENCES `players` (`id`);
+ALTER TABLE `Hand` ADD FOREIGN KEY (`player_id`) REFERENCES `players` (`id`);
 
-ALTER TABLE `AnswerCards` ADD FOREIGN KEY (`id`) REFERENCES `Hands` (`answer_card_id`);
+ALTER TABLE `AnswerCards` ADD FOREIGN KEY (`id`) REFERENCES `Hand` (`answer_card_id`);
