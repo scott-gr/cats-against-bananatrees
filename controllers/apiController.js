@@ -53,6 +53,10 @@ router.get("/api/getgame/:roomid", async (req, res) => {
     if (masterObj.currentRound.submittedAnswers.length === masterObj.playerCount - 1 && masterObj.currentRound.status === 1) {
       masterObj.currentRound.status = 2;
     }
+
+    if (masterObj.currentRound.status === 2 && masterObj.currentRound.winnerId !== null) {
+      masterObj.currentRound.status = 3;
+    }
   
     // Returns JSON onject containing all data
     res.json(masterObj);

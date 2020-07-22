@@ -225,7 +225,7 @@ const getGameObj = () => {
         submittedAnswers.forEach((answerObj) => {
           const cardText = answerCardDeck[answerObj.answer_card_id.toString()];
           const cardDiv = $(
-            `<div class="cardBox data-card-id="${answerObj.answer_card_id}" onclick="handleJudgingCardSelect(${answerObj.answer_card_id}, ${roundId})">${cardText}</div>`
+            `<div class="cardBox data-card-id="${answerObj.answer_card_id}" onclick="handleJudgingCardSelect(${answerObj.answer_card_id}, ${roundId}, ${answerObj.player_id}, ${roomId}, ${res.currentRound.roundNumber})">${cardText}</div>`
           );
           $("#cards").append(cardDiv); 
         })
@@ -237,14 +237,23 @@ const getGameObj = () => {
   }
 };
 
-const handleJudgingCardSelect = (cardid, roundId) => {
+const handleJudgingCardSelect = (cardid, roundId, winnerId, roomId, roundNum) => {
   console.log('cardId', cardid);
   console.log('roundId', roundId);
+  $.ajax({
+    url: "/api/addwinnerid",
+    data: {
+      roundId,
+      winnerId
+    },
+    method: "PUT"
+  }).then((res) => {
+    createRound(roomId, roundNum + 1);
+    socket.emit("advanceStatus");
+  })
 }
 
 const handleCardSelect = (cardid, playerId, roundId) => {
-  console.log(cardid);
-  console.log(playerId);
   $.ajax({
     url: "/api/hands",
     type: "DELETE",
@@ -258,20 +267,19 @@ const handleCardSelect = (cardid, playerId, roundId) => {
       const answerDeck = JSON.parse(sessionStorage.getItem("answerCards"));
       const keys = Object.keys(answerDeck);
       let randomQuestionId = keys[Math.floor(Math.random() * keys.length)];
-      console.log(randomQuestionId);
       writePlayerAnswerCardToDB(randomQuestionId, playerId).then((res) => {
-        socket.emit("cardPlayed");
+        socket.emit("advanceStatus");
       })
     });
   });
 };
 
-const createRound = (roomId) => {
+const createRound = (roomId, roundNum) => {
   $.ajax({
     url: "/api/createround",
     data: {
       room_id: roomId,
-      game_round: 1,
+      game_round: roundNum || 1,
     },
     method: "POST",
   })
@@ -280,7 +288,11 @@ const createRound = (roomId) => {
         data: { id },
       } = res;
       sessionStorage.setItem("roundId", id);
-      getPlayers(roomId);
+      if (!roundNum) {
+        getPlayers(roomId);
+      } else {
+        // sessionStorage.getItem()
+      }
     })
     .catch((err) => {
       console.log(err);

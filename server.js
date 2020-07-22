@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
     io.sockets.emit("confirmRoomCreated", id);
   });
 
-  socket.on("cardPlayed", () => {
+  socket.on("advanceStatus", () => {
     io.sockets.emit("getNewGameObj", users);
   });
 

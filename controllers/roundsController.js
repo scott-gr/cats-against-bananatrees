@@ -134,4 +134,34 @@ module.exports = function (router) {
         });
       });
   });
+
+  router.put("/api/addwinnerid", (req, res) => {
+    const roundId = parseInt(req.body.roundId);
+    const winnerId = parseInt(req.body.winnerId);
+    db.Rounds.update(
+      {
+        winner_id: winnerId
+      },
+      {
+        where: {
+          id: roundId,
+        },
+      }
+    )
+      .then((result) => {
+        res.json({
+          error: false,
+          data: result,
+          message: "Successfully updated round",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: "Unable to update round.",
+        });
+      });
+  });
 };
