@@ -54,11 +54,6 @@ const getAnswerCards = () => {
   return $.get("/api/answer_cards");
 };
 
-const drawhand = async () => {
-  const newHand = await db.sequelize.query(
-    "SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7"
-  );
-};
 // validation for name input, stores first user as host
 const roomInit = () => {
   const nameInput = $("#indexName").val();
