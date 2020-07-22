@@ -184,11 +184,18 @@ h2 {
     -webkit-overflow-scrolling: touch;
   }
   h1 {
-    top: 5%;
+    top: -50%;
     z-index: -1;
     color: black;
     line-height: 2em;
     box-shadow: 4px 4px 10px black;
+  }
+  html {
+    background: url(./assets/CABTsquare.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
   }
   .buttonBox {
     font-size: 1.25em;
@@ -216,8 +223,8 @@ h2 {
     display: none;
   }
   #chatDisplay {
-    margin: 95% 8.5% 7%;
-    height: 31%;
+    margin: 110% 8.5% 7%;
+    height: 10%;
   }
   #copyURL {
     padding: 4%;
@@ -239,7 +246,7 @@ h2 {
     margin: 0% 5% 5% 0%;
   }
   #indexName {
-    margin: 93% 8% 0% 8%;
+    margin: 50% 8% 0% 8%;
   }
   #logo {
     font-size: 1.75em;
