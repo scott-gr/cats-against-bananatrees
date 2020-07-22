@@ -2,6 +2,7 @@
 const getRandomCardById = async (data) => {
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem("selected question", JSON.stringify(randomQuestion));
+  sessionStorage.setItem("questionCardsArr", JSON.stringify(data));
 
   const roundId = sessionStorage.getItem("roundId");
   const judgeId = sessionStorage.getItem("playerId");
@@ -207,6 +208,11 @@ const getGameObj = () => {
       const judgeId = res.currentRound.judgeId;
       const roundId = res.currentRound.id;
       const players = res.players;
+      const playerIdsArr = res.players.map((playerObj) => playerObj.id);
+      const judgeIndex = playerIdsArr.indexOf(judgeId);
+      const nextJudgeIndex = judgeIndex + 1 > playerIdsArr.length ? judgeIndex + 1 - playerIdsArr.length : judgeIndex + 1;
+      const nextJudgeId = playerIdsArr[nextJudgeIndex];
+      console.log("next judge", nextJudgeId);
       const player = players.filter((playerObj) => playerObj.id === playerId);
       const hand = player[0].currentHandCardIds;
 
@@ -291,7 +297,8 @@ const createRound = (roomId, roundNum) => {
       if (!roundNum) {
         getPlayers(roomId);
       } else {
-        // sessionStorage.getItem()
+        const questionCardsArr = JSON.parse(sessionStorage.getItem("questionCardsArr"));
+        getRandomCardById(questionCardsArr);
       }
     })
     .catch((err) => {
