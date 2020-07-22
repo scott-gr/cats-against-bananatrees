@@ -10,24 +10,5 @@ module.exports = function (sequelize, DataTypes) {
       timestamps: false,
     }
   );
-
-  // Rooms.associate = function (models) {
-  //   Rooms.hasMany(models.Players, {
-  //     onDelete: "cascade",
-  //   });
-  // };
-
-  // Rooms.associate = function (models) {
-  //   Rooms.hasMany(models.Rounds, {
-  //     onDelete: "cascade",
-  //   });
-  // };
-
-  // Rooms.associate = function (models) {
-  //   Rooms.hasOne(models.Rounds, {
-  //     onDelete: "cascade",
-  //   });
-  // };
-
   return Rooms;
 };
