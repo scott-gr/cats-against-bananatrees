@@ -10,26 +10,26 @@ const getRandomCardById = async (data) => {
 };
 
 const putQuestionCard = (roundId, questionCardId) => {
-  return $.ajax ({
+  return $.ajax({
     url: "/api/addroundquestion",
     data: {
-      roundId, 
-      questionCardId
+      roundId,
+      questionCardId,
     },
-    method: "PUT"
-  })
-}
+    method: "PUT",
+  });
+};
 
 const putJudgeId = (roundId, judgeId) => {
-  return $.ajax ({
+  return $.ajax({
     url: "/api/addroundjudgeid",
     data: {
-      roundId, 
-      judgeId
+      roundId,
+      judgeId,
     },
-    method: "PUT"
-  })
-}
+    method: "PUT",
+  });
+};
 
 const getQuestionCards = () => {
   return $.get("/api/question_cards");
@@ -205,6 +205,7 @@ const getGameObj = () => {
       console.log("res", res);
       const questionCardId = res.currentRound.questionCardId;
       const judgeId = res.currentRound.judgeId;
+      const roundId = res.currentRound.id;
       const players = res.players;
       const player = players.filter((playerObj) => playerObj.id === playerId);
       const hand = player[0].currentHandCardIds;
@@ -212,7 +213,9 @@ const getGameObj = () => {
       if (judgeId !== playerId) {
         hand.forEach((cardid) => {
           const cardText = answerCardDeck[cardid.toString()];
-          const cardDiv = $(`<div class="cardBox">${cardText}</div>`);
+          const cardDiv = $(
+            `<div class="cardBox data-card-id="${cardid}" onclick="handleCardSelect(${cardid}, ${playerId}, ${roundId})">${cardText}</div>`
+          );
           $("#cards").append(cardDiv);
         });
       }
@@ -221,6 +224,24 @@ const getGameObj = () => {
       $("#gameCards").html(questionCardText);
     });
   }
+};
+
+const handleCardSelect = (cardid, playerId, roundId) => {
+  console.log(cardid);
+  console.log(playerId);
+  $.ajax({
+    url: "/api/hands",
+    type: "DELETE",
+    data: {"id": cardid, "playerid": playerId}
+  })
+    .then((res) => {
+
+      const answerDeck = JSON.parse(sessionStorage.getItem("answerCards"));
+      const keys = Object.keys(answerDeck);
+      let randomQuestionId = keys[Math.floor(Math.random() * keys.length)];
+      console.log(randomQuestionId);
+      writePlayerAnswerCardToDB(randomQuestionId, playerId);
+    })
 };
 
 const createRound = (roomId) => {
