@@ -1,13 +1,16 @@
 // get a random question card from db
-const getRandomCardById = async (data) => {
+const getRandomCardById = async (isFirstRound, data, nextJudgeId) => {
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem("selected question", JSON.stringify(randomQuestion));
   sessionStorage.setItem("questionCardsArr", JSON.stringify(data));
-
+  console.log(nextJudgeId);
   const roundId = sessionStorage.getItem("roundId");
-  const judgeId = sessionStorage.getItem("playerId");
+  const judgeId = nextJudgeId || sessionStorage.getItem("playerId");
   await putQuestionCard(roundId, randomQuestion.id);
   await putJudgeId(roundId, judgeId);
+  if (isFirstRound === false) {
+    socket.emit("advanceStatus");
+  }
 };
 
 const putQuestionCard = (roundId, questionCardId) => {
@@ -231,7 +234,7 @@ const getGameObj = () => {
         submittedAnswers.forEach((answerObj) => {
           const cardText = answerCardDeck[answerObj.answer_card_id.toString()];
           const cardDiv = $(
-            `<div class="cardBox data-card-id="${answerObj.answer_card_id}" onclick="handleJudgingCardSelect(${answerObj.answer_card_id}, ${roundId}, ${answerObj.player_id}, ${roomId}, ${res.currentRound.roundNumber})">${cardText}</div>`
+            `<div class="cardBox data-card-id="${answerObj.answer_card_id}" onclick="handleJudgingCardSelect(${answerObj.answer_card_id}, ${roundId}, ${answerObj.player_id}, ${roomId}, ${res.currentRound.roundNumber}, ${nextJudgeId})">${cardText}</div>`
           );
           $("#cards").append(cardDiv); 
         })
@@ -243,7 +246,7 @@ const getGameObj = () => {
   }
 };
 
-const handleJudgingCardSelect = (cardid, roundId, winnerId, roomId, roundNum) => {
+const handleJudgingCardSelect = (cardid, roundId, winnerId, roomId, roundNum, nextJudgeId) => {
   console.log('cardId', cardid);
   console.log('roundId', roundId);
   $.ajax({
@@ -254,8 +257,7 @@ const handleJudgingCardSelect = (cardid, roundId, winnerId, roomId, roundNum) =>
     },
     method: "PUT"
   }).then((res) => {
-    createRound(roomId, roundNum + 1);
-    socket.emit("advanceStatus");
+    createRound(roomId, roundNum + 1, nextJudgeId);
   })
 }
 
@@ -280,7 +282,7 @@ const handleCardSelect = (cardid, playerId, roundId) => {
   });
 };
 
-const createRound = (roomId, roundNum) => {
+const createRound = (roomId, roundNum, nextJudgeId) => {
   $.ajax({
     url: "/api/createround",
     data: {
@@ -298,7 +300,7 @@ const createRound = (roomId, roundNum) => {
         getPlayers(roomId);
       } else {
         const questionCardsArr = JSON.parse(sessionStorage.getItem("questionCardsArr"));
-        getRandomCardById(questionCardsArr);
+        getRandomCardById(false, questionCardsArr, nextJudgeId);
       }
     })
     .catch((err) => {
@@ -370,7 +372,7 @@ const getAllCardInfo = async () => {
   sessionStorage.setItem("questionCards", JSON.stringify(questionCardLookup));
   const isHost = sessionStorage.getItem("isHost");
   if (isHost === "true") {
-    await getRandomCardById(data);
+    await getRandomCardById(true, data);
   }
 
   const answerRes = await getAnswerCards();
