@@ -45,9 +45,7 @@ io.on("connection", (socket) => {
 
   //listening for message
   socket.on("msg", (data) => {
-    console.log("data received:", data);
     messages.push(data);
-    console.log(messages);
     //Send message to everyone
     io.sockets.emit("newmsg", messages);
   });

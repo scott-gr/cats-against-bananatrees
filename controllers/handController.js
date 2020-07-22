@@ -30,7 +30,6 @@ module.exports = function (router) {
       answer_card_id: parseInt(req.body.answer_card_id)
     })
       .then((result) => {
-        console.log("Hand post call:", result);
         res.json({
           error: false,
           data: result,

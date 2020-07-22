@@ -2,7 +2,6 @@
 const getRandomCardById = async (isFirstRound, data, nextJudgeId) => {
   let randomQuestion = data[Math.floor(Math.random() * data.length)];
   sessionStorage.setItem("selected question", JSON.stringify(randomQuestion));
-  console.log(nextJudgeId);
   const roundId = sessionStorage.getItem("roundId");
   const judgeId = nextJudgeId || sessionStorage.getItem("playerId");
   await putQuestionCard(roundId, randomQuestion.id);
@@ -59,7 +58,6 @@ const drawhand = async () => {
   const newHand = await db.sequelize.query(
     "SELECT DISTINCT * FROM gameDB.AnswerCards ORDER BY RAND() LIMIT 7"
   );
-  console.log("newHand", newHand);
 };
 // validation for name input, stores first user as host
 const roomInit = () => {
@@ -207,11 +205,13 @@ const getGameObj = () => {
 
   if (roomId !== undefined) {
     $.get("/api/getgame/" + roomId, (res) => {
-      console.log("res", res);
       const questionCardId = res.currentRound.questionCardId;
       const judgeId = res.currentRound.judgeId;
       const roundId = res.currentRound.id;
       const players = res.players;
+      const playersLookup = {};
+      players.forEach(player => playersLookup[player.id] = player.name);
+      sessionStorage.setItem("playersLookup", JSON.stringify(playersLookup));
       const playerIdsArr = res.players.map((playerObj) => playerObj.id);
       const judgeIndex = playerIdsArr.indexOf(judgeId);
       const nextJudgeIndex =
@@ -219,7 +219,6 @@ const getGameObj = () => {
           ? judgeIndex + 1 - playerIdsArr.length
           : judgeIndex + 1;
       const nextJudgeId = playerIdsArr[nextJudgeIndex];
-      console.log("next judge", nextJudgeId);
       const player = players.filter((playerObj) => playerObj.id === playerId);
       const hand = player[0].currentHandCardIds;
 
@@ -258,8 +257,13 @@ const handleJudgingCardSelect = (
   roundNum,
   nextJudgeId
 ) => {
-  // const winnerObj = players.filter((player) => player.id === winnerId);
-  // console.log(winnerObj);
+  const playersLookup = JSON.parse(sessionStorage.getItem("playersLookup"));
+  const winnerName = playersLookup[winnerId];
+  socket.emit("msg", {
+    message: `Congratulations, ${winnerName}. You're a "winner"...`,
+    user: "Banana Cat"
+  });
+
   $.ajax({
     url: "/api/addwinnerid",
     data: {
@@ -396,11 +400,9 @@ const getAllCardInfo = async () => {
   const playerId = sessionStorage.getItem("playerId");
   const cardObjArr = [];
   for (i = 0; i < 7; i++) {
-    console.log(i);
     const cardObj = drawAnswerCard(answerData);
     cardObjArr.push(cardObj);
     const writeCardRes = await writePlayerAnswerCardToDB(cardObj.id, playerId);
-    console.log(writeCardRes);
   }
   sessionStorage.setItem("player hand", JSON.stringify(cardObjArr));
 };
@@ -479,7 +481,6 @@ socket.on("userExists", (data) => {
 });
 
 socket.on("getNewGameObj", () => {
-  console.log("get new game obj triggered");
   window.location.reload();
 });
 

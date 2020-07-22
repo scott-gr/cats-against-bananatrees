@@ -24,7 +24,6 @@ router.get("/api/getgame/:roomid", async (req, res) => {
         room_id: req.params.roomid,
       },
     });
-    console.log('**** players length ****', playersArr.length);
 
     let masterObj = constructMasterObj(roomObj, roundsArr, playersArr);
     

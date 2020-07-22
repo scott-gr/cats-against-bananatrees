@@ -87,7 +87,6 @@ module.exports = function (router) {
       }
     )
       .then((result) => {
-        console.log("round question", result);
         res.json({
           error: false,
           data: result,
@@ -118,7 +117,6 @@ module.exports = function (router) {
       }
     )
       .then((result) => {
-        console.log("round question", result);
         res.json({
           error: false,
           data: result,

@@ -2,7 +2,6 @@ const db = require("../models");
 
 module.exports = function (router) {
   router.post("/api/roundanswercards", (req, res) => {
-    console.log(req);
     db.RoundAnswerCards.create({
       player_id: req.body.player_id,
       answer_card_id: req.body.answer_card_id,
