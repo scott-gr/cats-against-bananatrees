@@ -31,7 +31,7 @@ module.exports = function (router) {
       judge_id: null,
       question_card_id: null,
       room_id: req.body.room_id,
-      winner_id: null
+      winner_id: null,
     })
       .then((result) => {
         res.json({
@@ -49,26 +49,89 @@ module.exports = function (router) {
         });
       });
   });
-  router.get("/api/getRounds/:game_round"), (req, res) => {
-    db.Rounds.findAll({
-      where: {
-        room_id: req.params.game_round
+  router.get("/api/getRounds/:game_round"),
+    (req, res) => {
+      db.Rounds.findAll({
+        where: {
+          room_id: req.params.game_round,
+        },
+      })
+        .then((result) => {
+          res.json({
+            error: false,
+            data: result,
+            message: "Successfully retrieved rounds",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            error: true,
+            data: null,
+            message: "Unable to retrieve rounds",
+          });
+        });
+    };
+
+  router.put("/api/addroundquestion", (req, res) => {
+    const roundId = parseInt(req.body.roundId);
+    const questionCardId = parseInt(req.body.questionCardId);
+    db.Rounds.update(
+      {
+        question_card_id: questionCardId
+      },
+      {
+        where: {
+          id: roundId,
+        },
       }
-    })
+    )
       .then((result) => {
+        console.log("round question", result);
         res.json({
           error: false,
           data: result,
-          message: 'Successfully retrieved rounds'
-        })
+          message: "Successfully updated round",
+        });
       })
       .catch((err) => {
         console.log(err);
         res.status(500).json({
           error: true,
           data: null,
-          message: 'Unable to retrieve rounds'
-        })
+          message: "Unable to update round.",
+        });
+      });
+  });
+
+  router.put("/api/addroundjudgeid", (req, res) => {
+    const roundId = parseInt(req.body.roundId);
+    const judgeId = parseInt(req.body.judgeId);
+    db.Rounds.update(
+      {
+        judge_id: judgeId
+      },
+      {
+        where: {
+          id: roundId,
+        },
+      }
+    )
+      .then((result) => {
+        console.log("round question", result);
+        res.json({
+          error: false,
+          data: result,
+          message: "Successfully updated round",
+        });
       })
-  }
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: "Unable to update round.",
+        });
+      });
+  });
 };

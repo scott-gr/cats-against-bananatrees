@@ -2,7 +2,7 @@ const db = require('../models');
 
 module.exports = function (router) {
   router.get("/api/hands/:playerid", (req, res) => {
-  db.Hand.findAll({
+  db.Hands.findAll({
     where: {
       player_id:req.params.playerid
     },
@@ -25,9 +25,9 @@ module.exports = function (router) {
 });
 
   router.post("/api/hands", (req, res) => {
-    db.Hand.create({
-      player_id: req.body.player_id,
-      answer_card_id: req.body.answer_card_id
+    db.Hands.create({
+      player_id: parseInt(req.body.player_id),
+      answer_card_id: parseInt(req.body.answer_card_id)
     })
       .then((result) => {
         console.log("Hand post call:", result);
@@ -49,7 +49,7 @@ module.exports = function (router) {
 
   router.delete("/api/hands/:id", (req, res) => {
     const id = req.params.id;
-    db.Hand.destroy({
+    db.Hands.destroy({
       where: {id:id}
     })
       .then(deletedHand => {
