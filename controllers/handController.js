@@ -30,7 +30,6 @@ module.exports = function (router) {
       answer_card_id: parseInt(req.body.answer_card_id)
     })
       .then((result) => {
-        console.log("Hand post call:", result);
         res.json({
           error: false,
           data: result,
@@ -47,13 +46,25 @@ module.exports = function (router) {
       });
   });
 
-  router.delete("/api/hands/:id", (req, res) => {
-    const id = req.params.id;
+  router.delete("/api/hands", (req, res) => {
+    const id = parseInt(req.body.id);
+    const playerId = parseInt(req.body.playerid);
     db.Hands.destroy({
-      where: {id:id}
+      where: {
+        answer_card_id: id,
+        player_id: playerId
+      }
     })
       .then(deletedHand => {
         res.json(deletedHand);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: true,
+          data: null,
+          message: "Unable to create new Hand.",
+        });
       });
   });
   
