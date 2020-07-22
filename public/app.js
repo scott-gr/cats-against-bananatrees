@@ -232,16 +232,22 @@ const handleCardSelect = (cardid, playerId, roundId) => {
   $.ajax({
     url: "/api/hands",
     type: "DELETE",
-    data: {"id": cardid, "playerid": playerId}
-  })
-    .then((res) => {
-
+    data: { id: cardid, playerid: playerId },
+  }).then((res) => {
+    $.post("/api/roundanswercards", {
+      player_id: playerId,
+      answer_card_id: cardid,
+      round_id: roundId,
+    }).then((res) => {
       const answerDeck = JSON.parse(sessionStorage.getItem("answerCards"));
       const keys = Object.keys(answerDeck);
       let randomQuestionId = keys[Math.floor(Math.random() * keys.length)];
       console.log(randomQuestionId);
-      writePlayerAnswerCardToDB(randomQuestionId, playerId);
-    })
+      writePlayerAnswerCardToDB(randomQuestionId, playerId).then((res) => {
+        socket.emit("cardPlayed");
+      })
+    });
+  });
 };
 
 const createRound = (roomId) => {
@@ -415,6 +421,11 @@ socket.on("userExists", (data) => {
   $("#indexName").val("");
 });
 
+socket.on("getNewGameObj", () => {
+  console.log("get new game obj triggered");
+  window.location.reload();
+})
+
 socket.on("userSet", (data) => {
   const { username } = data;
   sessionStorage.setItem("userName", username);
@@ -447,7 +458,7 @@ socket.on("userList", (data) => {
 });
 
 socket.on("newmsg", (data) => {
-  if (user) {
+  if (data.user) {
     $("#message-container").html(
       "<div><b>" + data.user + "</b>: " + data.message + "</div>"
     );

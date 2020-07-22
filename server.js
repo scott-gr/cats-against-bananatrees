@@ -60,6 +60,10 @@ io.on("connection", (socket) => {
     io.sockets.emit("confirmRoomCreated", id);
   });
 
+  socket.on("cardPlayed", () => {
+    io.sockets.emit("getNewGameObj", users);
+  });
+
 //   // LEAVING THIS TO ADD IN FUNCTIONALITY LATER
 //   // socket.on("playerLeft", (playerLeaving) => {
 //   //   users = users.filter((userName) => userName !== playerLeaving);
