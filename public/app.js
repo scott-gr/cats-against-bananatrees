@@ -198,6 +198,8 @@ const broadcastNewPlayer = (newUser) => {
 };
 
 const getGameObj = () => {
+  getChatHistory();
+
   const roomId = sessionStorage.getItem("roomId");
   const playerId = parseInt(sessionStorage.getItem("playerId"));
   const questionCardDeck = JSON.parse(sessionStorage.getItem("questionCards"));
@@ -212,7 +214,10 @@ const getGameObj = () => {
       const players = res.players;
       const playerIdsArr = res.players.map((playerObj) => playerObj.id);
       const judgeIndex = playerIdsArr.indexOf(judgeId);
-      const nextJudgeIndex = judgeIndex + 1 > playerIdsArr.length - 1 ? judgeIndex + 1 - playerIdsArr.length : judgeIndex + 1;
+      const nextJudgeIndex =
+        judgeIndex + 1 > playerIdsArr.length - 1
+          ? judgeIndex + 1 - playerIdsArr.length
+          : judgeIndex + 1;
       const nextJudgeId = playerIdsArr[nextJudgeIndex];
       console.log("next judge", nextJudgeId);
       const player = players.filter((playerObj) => playerObj.id === playerId);
@@ -235,8 +240,8 @@ const getGameObj = () => {
           const cardDiv = $(
             `<div class="cardBox data-card-id="${answerObj.answer_card_id}" onclick="handleJudgingCardSelect(${answerObj.answer_card_id}, ${roundId}, ${answerObj.player_id}, ${roomId}, ${res.currentRound.roundNumber}, ${nextJudgeId})">${cardText}</div>`
           );
-          $("#cards").append(cardDiv); 
-        })
+          $("#cards").append(cardDiv);
+        });
       }
 
       const questionCardText = questionCardDeck[questionCardId.toString()];
@@ -245,9 +250,16 @@ const getGameObj = () => {
   }
 };
 
-const handleJudgingCardSelect = (cardid, roundId, winnerId, roomId, roundNum, nextJudgeId) => {
-  console.log('cardId', cardid);
-  console.log('roundId', roundId);
+const handleJudgingCardSelect = (
+  cardid,
+  roundId,
+  winnerId,
+  roomId,
+  roundNum,
+  nextJudgeId
+) => {
+  // const winnerObj = players.filter((player) => player.id === winnerId);
+  // console.log(winnerObj);
   $.ajax({
     url: "/api/addwinnerid",
     data: {
@@ -446,11 +458,19 @@ socket.on("confirmRoomCreated", (id) => {
 });
 
 socket.on("newmsg", (data) => {
-  const { message, user } = data;
-  const chatEntry = $(`<li>${user}: ${message}</li>`);
-  $("#chatEntries").prepend(chatEntry);
-  $("#chatInput").val("");
+  $("#chatEntries").empty();
+  for (i = 0; i < data.length; i++) {
+    const item = data[i];
+    const { message, user } = item;
+    const chatEntry = $(`<li>${user}: ${message}</li>`);
+    $("#chatEntries").prepend(chatEntry);
+    $("#chatInput").val("");
+  }
 });
+
+const getChatHistory = () => {
+  socket.emit("getChats");
+};
 
 socket.on("userExists", (data) => {
   $("#error-container").css("display", "block");
@@ -461,7 +481,7 @@ socket.on("userExists", (data) => {
 socket.on("getNewGameObj", () => {
   console.log("get new game obj triggered");
   window.location.reload();
-})
+});
 
 socket.on("userSet", (data) => {
   const { username } = data;
