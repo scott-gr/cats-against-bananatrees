@@ -25,23 +25,37 @@ router.get("/api/getgame/:roomid", async (req, res) => {
       },
     });
 
-    const masterObj = constructMasterObj(roomObj, roundsArr, playersArr);
-    console.log("one");
-    for (i = 0; i < masterObj.players.length; i++) {
-      console.log(i);
-      const player = masterObj.players[i];
+    let masterObj = constructMasterObj(roomObj, roundsArr, playersArr);
+    
+    for (i = 0; i < masterObj.playerCount; i++) {
+      // const player = masterObj.players[i];
 
       const playerCards = await db.Hands.findAll({
         where: {
-          player_id: player.id
+          player_id: playersArr[i].id
         }
       });
 
       const handCards = playerCards.map((card) => card.answer_card_id);
-      console.log("handcards", handCards);
-      masterObj.players[i].currentHandCardIds = handCards;
-    
+      if (masterObj.players && masterObj.players[i]) {
+        masterObj.players[i].currentHandCardIds = handCards;    
+      }
     };
+
+    const roundAnswerCards = await db.RoundAnswerCards.findAll({
+      where: {
+        round_id: masterObj.currentRound.id
+      }
+    });
+    masterObj.currentRound.submittedAnswers = roundAnswerCards;
+
+    if (masterObj.currentRound.submittedAnswers.length === masterObj.playerCount - 1 && masterObj.currentRound.status === 1) {
+      masterObj.currentRound.status = 2;
+    }
+
+    if (masterObj.currentRound.status === 2 && masterObj.currentRound.winnerId !== null) {
+      masterObj.currentRound.status = 3;
+    }
   
     // Returns JSON onject containing all data
     res.json(masterObj);

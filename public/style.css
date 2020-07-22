@@ -57,6 +57,10 @@ h2 {
   border: 9px solid lightgray;
 }
 
+.cardBox:hover {
+  box-shadow: inset 0px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
 .container {
   display: flex;
   flex-flow: wrap;
@@ -176,7 +180,8 @@ h2 {
 /* Media Queries */
 @media only screen and (max-width: 600px) {
   body {
-    overflow: scroll;
+    overflow-y: scroll; /* has to be scroll, not auto */
+    -webkit-overflow-scrolling: touch;
   }
   h1 {
     top: 5%;
@@ -208,9 +213,7 @@ h2 {
     top: 29%;
   }
   #catImage {
-    width: 68%;
-    top: 36%;
-    left: 16%;
+    display: none;
   }
   #chatDisplay {
     margin: 95% 8.5% 7%;
