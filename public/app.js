@@ -220,11 +220,27 @@ const getGameObj = () => {
         });
       }
 
+      if (judgeId === playerId && res.currentRound.status === 2) {
+        const submittedAnswers = res.currentRound.submittedAnswers;
+        submittedAnswers.forEach((answerObj) => {
+          const cardText = answerCardDeck[answerObj.answer_card_id.toString()];
+          const cardDiv = $(
+            `<div class="cardBox data-card-id="${answerObj.answer_card_id}" onclick="handleJudgingCardSelect(${answerObj.answer_card_id}, ${roundId})">${cardText}</div>`
+          );
+          $("#cards").append(cardDiv); 
+        })
+      }
+
       const questionCardText = questionCardDeck[questionCardId.toString()];
       $("#gameCards").html(questionCardText);
     });
   }
 };
+
+const handleJudgingCardSelect = (cardid, roundId) => {
+  console.log('cardId', cardid);
+  console.log('roundId', roundId);
+}
 
 const handleCardSelect = (cardid, playerId, roundId) => {
   console.log(cardid);
