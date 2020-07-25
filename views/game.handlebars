@@ -2,27 +2,17 @@
   <div id="gameCards" class="cardBox"></div>
 </div>
 <div id="sidebar">
-  <div 
-    id="logo" 
-    class="box">
+  <div id="logo" class="box">
     Cats<br>Against<br>Banana<br>Trees
   </div>
   <div id="chatDisplay" class="box">
     <ul id="chatEntries"></ul>
   </div>
-  <input 
-    id="chatInput" 
-    class="pgButtonBox" 
-    type="text" 
-    name="name" 
-    value="" 
-    placeholder="Trash talk goes here."
-    onkeyup="inputKeyUp(event)"
-  >
+  <input id="chatInput" class="pgButtonBox" type="text" name="name" value="" placeholder="Trash talk goes here."
+    onkeyup="inputKeyUp(event)">
 </div>
 <script>
   $("document").ready(() => {
     getGameObj();
   });
 </script>
-

@@ -1,5 +1,4 @@
 module.exports = function (sequelize, DataTypes) {
-  
   const AnswerCards = sequelize.define("AnswerCards", {
       text: DataTypes.STRING,
     
@@ -7,7 +6,6 @@ module.exports = function (sequelize, DataTypes) {
       timestamps: false,
     });
   return AnswerCards;
-  
 };
 
 
